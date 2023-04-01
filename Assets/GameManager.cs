@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private List<EnemyController> enemies;
-    bool[,] walls;
+    Dictionary<Vector2Int, bool> walkable = new();
 
     public void RegisterEnemy(EnemyController enemy)
     {
@@ -47,6 +47,11 @@ public class GameManager : MonoBehaviour
 
     public bool IsWalkable(Vector2Int pos)
     {
-        return true;
+        return walkable.GetValueOrDefault(pos, true);
+    }
+
+    public void SetWalkable(Vector2Int pos, bool _walkable)
+    {
+        walkable[pos] = _walkable;
     }
 }
