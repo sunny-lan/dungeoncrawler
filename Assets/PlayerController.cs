@@ -8,20 +8,47 @@ public class PlayerController : GridEntity
     protected override void Start()
     {
         base.Start();
-        Debug.Log("Start Parent");
     }
 
+    int moveCnt = 0;
+
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W)) transform.position += Vector3.forward;
-        if (Input.GetKeyDown(KeyCode.A)) transform.position += Vector3.left;
-        if (Input.GetKeyDown(KeyCode.S)) transform.position += Vector3.back;
-        if (Input.GetKeyDown(KeyCode.D)) transform.position += Vector3.right;
-        if (Input.GetKeyDown(KeyCode.Q)) transform.Rotate(0, -90, 0);
-        if (Input.GetKeyDown(KeyCode.E)) transform.Rotate(0, 90, 0);
+        base.Update();
+
+        bool didMove = false;
+        Vector2Int newPosition = pos;
+
+        // Check inputs
+        if (Input.GetKeyDown(KeyCode.W)) { newPosition += Vector2Int.up; }
+        if (Input.GetKeyDown(KeyCode.A)) { newPosition += Vector2Int.left;}
+        if (Input.GetKeyDown(KeyCode.S)) { newPosition += Vector2Int.down;}
+        if (Input.GetKeyDown(KeyCode.D)) { newPosition += Vector2Int.right;}
+        //if (Input.GetKeyDown(KeyCode.Q)) { transform.Rotate(0, -90, 0);}
+        //if (Input.GetKeyDown(KeyCode.E)) { transform.Rotate(0, 90, 0);}
+
+        // Check valid
+        if (newPosition != pos)
+        {
+            if (GameManager.Instance.IsWalkable(newPosition))
+            {
+                pos = newPosition;
+
+                transform.position = new(pos.x, 0, pos.y);
+                didMove = true;
+            }
+        }
 
         // Call DoEnemyTurn
+        if (didMove)
+        {
+            moveCnt++;
+            if (moveCnt % 2 == 0)
+            {
+                GameManager.Instance.DoEnemyTurn();
+            }
+        }
     }
 
 }

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class GridEntity : MonoBehaviour
 {
-    bool isZombie;
-    Vector2Int pos;
+    public bool isZombie;
+    public Vector2Int pos;
 
     protected virtual void Start()
     {
-        Debug.Log("Start Base");
+    }
+    protected virtual void Update()
+    {
     }
 }
