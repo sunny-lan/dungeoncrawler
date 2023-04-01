@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GridEntity
 {
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
+        Debug.Log("Start Parent");
     }
 
     // Update is called once per frame
@@ -19,5 +20,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) transform.position += Vector3.right;
         if (Input.GetKeyDown(KeyCode.Q)) transform.Rotate(0, -90, 0);
         if (Input.GetKeyDown(KeyCode.E)) transform.Rotate(0, 90, 0);
+
+        // Call DoEnemyTurn
     }
+
 }
