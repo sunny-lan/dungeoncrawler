@@ -21,7 +21,7 @@ public class EnemyController : GridEntity
 
         foreach (var entity in visible)
         {
-            if (entity.isZombie)
+            if (entity.GetIsZombie())
             {
                 seesZombie = true;
                 if (Vector2Int.Distance(pos, entity.pos) < distToNearestZombie)
