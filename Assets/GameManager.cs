@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private List<EnemyController> enemies;
+    bool[,] walls;
 
     public void RegisterEnemy(EnemyController enemy)
     {
@@ -42,5 +43,10 @@ public class GameManager : MonoBehaviour
         // return null if unoccupied
         // return the gameobject if it's there
         return null;
+    }
+
+    public bool IsWalkable(Vector2Int pos)
+    {
+        return true;
     }
 }
