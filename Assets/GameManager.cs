@@ -19,22 +19,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private List<EnemyController> enemies;
     Dictionary<Vector2Int, bool> walkable = new();
+    [SerializeField] private List<GridEntity> entities;
+    [SerializeField] private PlayerController player;
 
-    public void RegisterEnemy(EnemyController enemy)
+    public void RegisterEntity(GridEntity entity)
     {
-        if (enemies == null)
-            enemies = new List<EnemyController>();
+        if (entities == null)
+            entities = new List<GridEntity>();
 
-        enemies.Add(enemy);
+        entities.Add(entity);
     }
 
+    [ContextMenu("Do Enemy Turn")]
     public void DoEnemyTurn()
     {
-        foreach (var enemy in enemies)
+        foreach (var entity in entities)
         {
-            enemy.DoTurn();
+            if (entity is EnemyController)
+                (entity as EnemyController).DoTurn();
         }
     }
 
@@ -43,6 +46,46 @@ public class GameManager : MonoBehaviour
         // return null if unoccupied
         // return the gameobject if it's there
         return null;
+    }
+
+    public List<GridEntity> GetAllEntitiesVisibleBy(GridEntity origin)
+    {
+        Physics.SyncTransforms();
+        var originRaycastCenter = origin.raycastCenter.position;
+        var found = new List<GridEntity>();
+
+        foreach (var entity in entities)
+        {
+            if (entity == origin ||  found.Contains(entity))
+                continue;
+
+            var targetRaycastCenter = entity.raycastCenter.position;
+            
+            var hits = Physics.RaycastAll(originRaycastCenter, targetRaycastCenter - originRaycastCenter, 1000);
+
+            System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
+
+            foreach (var hit in hits)
+            {
+                var hitEntity = hit.transform.GetComponent<GridEntity>();
+                
+                if (hitEntity == origin)
+                    continue;
+             
+                if (hitEntity != null)
+                {
+                    found.Add(hitEntity);
+                    Debug.DrawLine(originRaycastCenter, hit.point, Color.red, 1f);
+                }
+                else 
+                {
+                    Debug.DrawLine(originRaycastCenter, hit.point, Color.white, 1f);
+                }
+
+                break; // either hit a wall or an entity.
+            }
+        }
+        return found;
     }
 
     public bool IsWalkable(Vector2Int pos)
