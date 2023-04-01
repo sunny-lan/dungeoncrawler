@@ -73,14 +73,7 @@ public class GameManager : MonoBehaviour
                     continue;
              
                 if (hitEntity != null)
-                {
                     found.Add(hitEntity);
-                    Debug.DrawLine(originRaycastCenter, hit.point, Color.red, 1f);
-                }
-                else 
-                {
-                    Debug.DrawLine(originRaycastCenter, hit.point, Color.white, 1f);
-                }
 
                 break; // either hit a wall or an entity.
             }

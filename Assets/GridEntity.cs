@@ -13,6 +13,7 @@ public class GridEntity : MonoBehaviour
         return isZombie;
     }
 
+    [ContextMenu("SetIsZombie")]
     public virtual void SetIsZombie()
     {
         isZombie = true;
