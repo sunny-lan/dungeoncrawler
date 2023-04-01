@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class GridEntity : MonoBehaviour
 {
-    public bool isZombie;
+    protected bool isZombie;
     public Vector2Int pos;
+
+    public virtual bool GetIsZombie()
+    {
+        return isZombie;
+    }
+
+    public virtual void SetIsZombie()
+    {
+        isZombie = true;
+    }
 
     protected virtual void Start()
     {
