@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class PlayerController : GridEntity
 {
-    private Camera camera;
+    private Camera playerCam;
     [SerializeField] TMP_Text statusText;
 
     protected override void Awake()
     {
         base.Awake();
 
-        camera = GetComponentInChildren<Camera>();
+        playerCam = GetComponentInChildren<Camera>();
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -35,7 +35,7 @@ public class PlayerController : GridEntity
     Vector2Int GetFacingDir()
     {
         Vector2Int best = default;
-        Vector2 forward2d = new(camera.transform.forward.x, camera.transform.forward.z);
+        Vector2 forward2d = new(playerCam.transform.forward.x, playerCam.transform.forward.z);
         float max = float.NegativeInfinity;
         foreach (var dir in dirs)
         {
@@ -81,30 +81,19 @@ public class PlayerController : GridEntity
     {
         float range = isZombie ? biteRange : gunRange;
 
-        var center =  camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        bool didHitEnemy = Physics.Raycast(center, out var hitInfo, range, ~LayerMask.GetMask("Player"));
-
+        var center = playerCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Physics.Raycast(center, out var hitInfo, range, ~LayerMask.GetMask("Player"));
 
         GameObject hitObj = hitInfo.collider?.gameObject;
-        didHitEnemy = didHitEnemy && (hitObj.layer == LayerMask.NameToLayer("Enemy"));
+        Outline hitOutline = hitObj?.GetComponentInChildren<Outline>();
 
-        if (!didHitEnemy)
-        {
-            // Clear outline since raycast didn't hit
-            if (lastOutline != null)
-            {
-                lastOutline.enabled = false;
-                lastOutline = null;
-            }
-
-            return;
-        }
-
-        Outline hitOutline = hitObj.GetComponentInChildren<Outline>();
         if (hitOutline != lastOutline)
         {
-            hitOutline.OutlineWidth = 5;
-            hitOutline.enabled = true;
+            if (hitOutline != null)
+            {
+                hitOutline.OutlineWidth = 5;
+                hitOutline.enabled = true;
+            }
 
             // Clear old outline
             if (lastOutline != null)
@@ -115,24 +104,28 @@ public class PlayerController : GridEntity
             lastOutline = hitOutline;
         }
 
+
         if (!Input.GetMouseButtonDown(0))
             return;
 
-        var gridEntity = hitObj.GetComponent<GridEntity>();
-        if (isZombie)
+        if (hitObj.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if (gridEntity.isZombie)
-                return;
+            var gridEntity = hitObj.GetComponent<GridEntity>();
+            if (isZombie)
+            {
+                if (gridEntity.isZombie)
+                    return;
 
-            Bite(gridEntity);
-        }
-        else
-        {
-            float bulletDmg = 50; // TODO
-            gridEntity.health -= bulletDmg;
-        }
+                Bite(gridEntity);
+            }
+            else
+            {
+                float bulletDmg = 50; // TODO
+                gridEntity.health -= bulletDmg;
+            }
 
-        OnDidMove();
+            OnDidMove();
+        }
     }
 
     void CheckPlayerWalk()
