@@ -9,7 +9,7 @@ public class EnemyController : GridEntity
     [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
     public void DoTurn()
     {
-        if (GetIsZombie())
+        if (isZombie)
         {
             DoZombieTurn();
         }
@@ -73,7 +73,7 @@ public class EnemyController : GridEntity
 
         foreach (var entity in visible)
         {
-            if (entity.GetIsZombie() == targetIsZombie) // see a target
+            if (entity.isZombie == targetIsZombie) // see a target
             {
                 Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
                 seesTarget = true;

@@ -11,10 +11,13 @@ public class GridEntity : MonoBehaviour
     {
         get => _isZombie; set
         {
-            _isZombie = value;
-            if (renderer)
-                renderer.material.color = _isZombie ? Color.green : Color.red;
-            onChangeZombieStatus?.Invoke(_isZombie);
+            if (value != _isZombie)
+            {
+                _isZombie = value;
+                if (renderer)
+                    renderer.material.color = _isZombie ? Color.green : Color.red;
+                onChangeZombieStatus?.Invoke(_isZombie);
+            }
         }
     }
 
@@ -42,11 +45,6 @@ public class GridEntity : MonoBehaviour
 
     protected virtual void Awake() { }
 
-    public virtual bool GetIsZombie()
-    {
-        return isZombie;
-    }
-
     protected virtual void Start()
     {
         GameManager.Instance.RegisterEntity(this);
@@ -60,17 +58,41 @@ public class GridEntity : MonoBehaviour
     {
     }
 
+    public float bittenMaxHeatlh = -10;
+    public int bitesToHuman = 3;
+
+    // If zombie, counts the # of bites needed before becoming a human
+    int needToBite;
+
     public virtual void GetBitten(GridEntity by)
     {
-        Debug.Assert(by.GetIsZombie(), $"{by.name} was not a zombie");
         Debug.Log($"{name} got bitten by {by.name}");
+        Debug.Assert(!isZombie, $"{name} was a zombie but got bitten");
+        Debug.Assert(by.isZombie, $"{by.name} was a not a zombie");
+
+        health = Mathf.Min(health, bittenMaxHeatlh);
+        needToBite = bitesToHuman;
         isZombie = true;
     }
+
 
     public virtual void Bite(GridEntity victim)
     {
         victim.GetBitten(this);
-        victim.health = Mathf.Clamp(victim.health - biteDamage, -maxHealth, -1);
+        victim.health -= biteDamage;
         health += biteSelfHeal;
+        needToBite--;
+        if (needToBite <= 0 || health>0)
+        {
+            ReviveFromZombie();
+        }
+    }
+
+    public float reviveMinHealth = 50;
+
+    public virtual void ReviveFromZombie()
+    {
+        isZombie = false;
+        health = Mathf.Max(reviveMinHealth, health);
     }
 }

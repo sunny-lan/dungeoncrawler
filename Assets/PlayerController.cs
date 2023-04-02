@@ -80,7 +80,7 @@ public class PlayerController : GridEntity
 
     void CheckPlayerAction()
     {
-        float range = GetIsZombie() ? biteRange : gunRange;
+        float range = isZombie ? biteRange : gunRange;
 
         var center =  camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         bool didHitEnemy = Physics.Raycast(center, out var hitInfo, range, ~LayerMask.GetMask("Player"));
@@ -120,17 +120,12 @@ public class PlayerController : GridEntity
             return;
 
         var gridEntity = hitObj.GetComponent<GridEntity>();
-        if (GetIsZombie())
+        if (isZombie)
         {
-            if (gridEntity.GetIsZombie())
+            if (gridEntity.isZombie)
                 return;
 
-            gridEntity.GetBitten(this);
-            bitesToHuman--;
-            if(bitesToHuman == 0)
-            {
-                isZombie = true;
-            }
+            Bite(gridEntity);
         }
         else
         {
@@ -162,19 +157,5 @@ public class PlayerController : GridEntity
 
     }
 
-    public int bitesToHuman = 3;
-
-    int needToBite;
-
-    public override void GetBitten(GridEntity by)
-    {
-        if (GetIsZombie())
-        {
-            Debug.Log("Zombie shouldn't be bitten");
-            return;
-        }
-
-        needToBite = bitesToHuman;
-        base.GetBitten(by);
-    }
+    
 }
