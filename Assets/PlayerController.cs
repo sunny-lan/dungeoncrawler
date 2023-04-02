@@ -8,6 +8,8 @@ public class PlayerController : GridEntity
     private GameManager gameManager;
     private Camera camera;
     private PostProcessingController postproc;
+    private HPBar healthbar;
+    public float maxHealth = 100;
 
     protected override void Awake()
     {
@@ -16,6 +18,9 @@ public class PlayerController : GridEntity
         gameManager = FindObjectOfType<GameManager>();
         camera = GetComponentInChildren<Camera>();
         postproc = FindObjectOfType<PostProcessingController>();
+        healthbar = GetComponentInChildren<HPBar>();
+
+        onChangeHealth.AddListener(health => healthbar.HP = health/maxHealth);
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -182,5 +187,4 @@ public class PlayerController : GridEntity
 
         base.SetIsZombie(isZomb);
     }
-
 }
