@@ -31,6 +31,16 @@ public class GameManager : MonoBehaviour
         entities.Add(entity);
     }
 
+    [ContextMenu("Do Enemy Telegraph")]
+    public void DoEnemyTelegraph()
+    {
+        foreach (var entity in entities)
+        {
+            if (entity is EnemyController)
+                (entity as EnemyController).TelegraphTurn();
+        }
+    }
+
     [ContextMenu("Do Enemy Turn")]
     public void DoEnemyTurn()
     {

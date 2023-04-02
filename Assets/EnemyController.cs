@@ -7,34 +7,61 @@ public class EnemyController : GridEntity
 {
     Vector2Int lastMoveDir = Vector2Int.up;
     [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
-    public void DoTurn()
+    [SerializeField] EnemyTelegraphController telegraphController;
+
+    public void TelegraphTurn()
     {
         if (GetIsZombie())
         {
-            DoZombieTurn();
+            if (!TelegraphAttack())
+            {
+                // move toward humans
+                TelegraphMove(targetIsZombie: false, moveTowardTarget: true);
+            }
         }
         else
         {
-            DoGuardTurn();
+            // UNDONE guard ranged attack
+            // move away from zombies
+            TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
         }
     }
 
-    private void DoZombieTurn()
+    public void DoTurn()
     {
-        // move toward humans
-        if (!TryBite())
-            DoEnemyMove(targetIsZombie: false, moveTowardTarget: true);
+        var entity = GameManager.Instance.GetEntityAt(pos + telegraphController.GetDirection());
+        if (telegraphController.GetTelegraphType() == EnemyTelegraphController.TelgraphType.MOVE)
+        {
+            if (entity == null)
+            {
+                DoMove(telegraphController.GetDirection());  
+            }
+            else if(GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
+            {
+                entity.GetBitten(this);
+            }
+        }
+        else
+        { 
+            if (entity && GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
+            {
+                entity.GetBitten(this);
+            }
+        }
+
+        telegraphController.ClearTelegraph();
     }
 
-    private void DoGuardTurn()
+    private void DoMove(Vector2Int delta)
     {
-        // move away from zombies
-        DoEnemyMove(targetIsZombie: true, moveTowardTarget: false);
+        pos = pos + delta;
+        transform.position = new Vector3(pos.x, 0, pos.y);
+        lastMoveDir = delta;
     }
 
-    private bool TryBite()
+    private bool TelegraphAttack()
     {
-        // bite enemy in random direction, returns true if I bit anyone, false otherwise
+        // attack enemy in random direction, returns true if I can attack anyone, false otherwise
         Vector2Int delta = lastMoveDir;
 
         var dirs = new List<Vector2Int>()
@@ -54,17 +81,17 @@ public class EnemyController : GridEntity
             {
                 dirs.Remove(delta);
             }
-            else
+            else if (GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
             {
-                entity.GetBitten(this);
-                return true;
+               telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta);   
+               return true;
             }
         }
 
         return false;
     }
 
-    private void DoEnemyMove(bool targetIsZombie, bool moveTowardTarget)
+    private bool TelegraphMove(bool targetIsZombie, bool moveTowardTarget)
     {
         var visible = GameManager.Instance.GetAllEntitiesVisibleBy(this);
         bool seesTarget = false;
@@ -73,7 +100,7 @@ public class EnemyController : GridEntity
 
         foreach (var entity in visible)
         {
-            if (entity.GetIsZombie() == targetIsZombie) // see a target
+            if (entity.GetIsZombie() == targetIsZombie) // I see a target
             {
                 Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
                 seesTarget = true;
@@ -110,21 +137,17 @@ public class EnemyController : GridEntity
             {
                 if (GameManager.Instance.IsWalkable(pos + dir))
                 {
-                    pos = pos + dir;
-                    transform.position = new Vector3(pos.x, 0, pos.y);
-                    lastMoveDir = dir;
-                    return;
+                    telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir);
+                    return true;
                 }
             }
         }
-        else
-        {
-            MoveRandomly();
-        }
+
+        return TelegraphRandomMove();
     }
 
 
-    private void MoveRandomly()
+    private bool TelegraphRandomMove()
     {
         // more likely to continue moving in the same direction it was going
         Vector2Int delta = lastMoveDir;
@@ -154,9 +177,13 @@ public class EnemyController : GridEntity
             }
         }
 
+        telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta);
+        return true;
+    }
 
-        pos = pos + delta;
-        transform.position = new Vector3(pos.x, 0, pos.y);
-        lastMoveDir = delta;
+    public override void SetIsZombie(bool isZomb = true)
+    {
+        base.SetIsZombie(isZomb);
+        TelegraphTurn(); // TODO Stun when zombified
     }
 }
