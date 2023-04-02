@@ -7,11 +7,12 @@ public class GridEntity : MonoBehaviour
 {
     public UnityEvent<bool> onChangeZombieStatus;
     public bool isZombieInitial = false;
+    bool isInit = true;
     public bool isZombie
     {
         get => _isZombie; set
         {
-            if (value != _isZombie)
+            if (value != _isZombie || isInit)
             {
                 _isZombie = value;
                 if (_isZombie)
@@ -61,6 +62,8 @@ public class GridEntity : MonoBehaviour
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
         isZombie = isZombieInitial;
         health = initialHealth;
+
+        isInit = false;
     }
     protected virtual void Update()
     {
