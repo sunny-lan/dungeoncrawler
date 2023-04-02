@@ -15,7 +15,9 @@ public class GridEntity : MonoBehaviour
             {
                 _isZombie = value;
                 if (renderer)
-                    renderer.material.color = _isZombie ? Color.green : Color.red;
+                    renderer.material.color = !_isZombie ? Color.green : Color.red;
+                if (_isZombie)
+                    needToBite = bitesToHuman;
                 onChangeZombieStatus?.Invoke(_isZombie);
             }
         }
@@ -68,7 +70,7 @@ public class GridEntity : MonoBehaviour
     public int bitesToHuman = 3;
 
     // If zombie, counts the # of bites needed before becoming a human
-    int needToBite;
+    public int needToBite { get; private set; }
 
     public virtual void GetBitten(GridEntity by)
     {

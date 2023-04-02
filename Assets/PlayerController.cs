@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class PlayerController : GridEntity
 {
     private GameManager gameManager;
     private Camera camera;
+    [SerializeField] TMP_Text statusText;
 
     protected override void Awake()
     {
@@ -19,6 +21,7 @@ public class PlayerController : GridEntity
     protected override void Start()
     {
         base.Start();
+        UpdateStatus();
     }
 
     int moveCnt = 0;
@@ -153,5 +156,23 @@ public class PlayerController : GridEntity
 
     }
 
-    
+    void UpdateStatus()
+    {
+        if (isZombie)
+            statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
+        else
+            statusText.text = $"You are a human.";
+    }
+
+    public override void Bite(GridEntity victim)
+    {
+        base.Bite(victim);
+        UpdateStatus();
+    }
+
+    public override void GetBitten(GridEntity by)
+    {
+        base.GetBitten(by);
+        UpdateStatus();
+    }
 }
