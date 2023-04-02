@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    Dictionary<Vector2Int, bool> walkable = new();
+    Dictionary<Vector2Int, bool> walkable = new ();
     [SerializeField] private List<GridEntity> entities;
     [SerializeField] private PlayerController player;
 
@@ -41,10 +41,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GridEntity GetObjectAt(Vector2Int pos)
+    public GridEntity GetEntityAt(Vector2Int pos)
     {
-        // return null if unoccupied
-        // return the gameobject if it's there
+        foreach (var entity in entities)
+        {
+            if (entity.pos == pos)
+                return entity;
+        }
         return null;
     }
 
@@ -56,11 +59,11 @@ public class GameManager : MonoBehaviour
 
         foreach (var entity in entities)
         {
-            if (entity == origin ||  found.Contains(entity))
+            if (entity == origin || found.Contains(entity))
                 continue;
 
             var targetRaycastCenter = entity.raycastCenter.position;
-            
+
             var hits = Physics.RaycastAll(originRaycastCenter, targetRaycastCenter - originRaycastCenter, 1000);
 
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
@@ -68,10 +71,10 @@ public class GameManager : MonoBehaviour
             foreach (var hit in hits)
             {
                 var hitEntity = hit.transform.GetComponent<GridEntity>();
-                
+
                 if (hitEntity == origin)
                     continue;
-             
+
                 if (hitEntity != null)
                     found.Add(hitEntity);
 

@@ -11,24 +11,57 @@ public class EnemyController : GridEntity
     {
         if (GetIsZombie())
         {
-            DoZombieMove();
+            DoZombieTurn();
         }
         else
         {
-            DoGuardMove();
+            DoGuardTurn();
         }
     }
 
-    private void DoZombieMove()
+    private void DoZombieTurn()
     {
         // move toward humans
-        DoEnemyMove(targetIsZombie: false, moveTowardTarget: true);
+        if (!TryBite())
+            DoEnemyMove(targetIsZombie: false, moveTowardTarget: true);
     }
 
-    private void DoGuardMove()
+    private void DoGuardTurn()
     {
         // move away from zombies
         DoEnemyMove(targetIsZombie: true, moveTowardTarget: false);
+    }
+
+    private bool TryBite()
+    {
+        // bite enemy in random direction, returns true if I bit anyone, false otherwise
+        Vector2Int delta = lastMoveDir;
+
+        var dirs = new List<Vector2Int>()
+            {
+                Vector2Int.up,
+                Vector2Int.left,
+                Vector2Int.down,
+                Vector2Int.right
+            };
+
+        // pick random direction that we haven't tried yet
+        for (int i = 0; i < 4; i++)
+        {
+            delta = dirs[Random.Range(0, dirs.Count)];
+            var entity = GameManager.Instance.GetEntityAt(pos + delta);
+            if (entity == null)
+            {
+                dirs.Remove(delta);
+            }
+            else
+            {
+                entity.GetBitten(this);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void DoEnemyMove(bool targetIsZombie, bool moveTowardTarget)

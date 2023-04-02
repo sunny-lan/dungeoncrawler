@@ -42,6 +42,7 @@ public class GridEntity : MonoBehaviour
 
     public virtual void GetBitten(GridEntity by)
     {
+        Debug.Assert(by.GetIsZombie(), $"{by.name} was not a zombie");
         Debug.Log($"{name} got bitten by {by.name}");
         SetIsZombie();
     }
