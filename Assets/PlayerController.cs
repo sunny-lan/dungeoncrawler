@@ -7,7 +7,6 @@ public class PlayerController : GridEntity
 {
     private GameManager gameManager;
     private Camera camera;
-    private HPBar healthbar;
 
     protected override void Awake()
     {
@@ -15,9 +14,6 @@ public class PlayerController : GridEntity
 
         gameManager = FindObjectOfType<GameManager>();
         camera = GetComponentInChildren<Camera>();
-        healthbar = GetComponentInChildren<HPBar>();
-
-        onChangeHealth.AddListener(health => healthbar.HP = health/maxHealth);
     }
     // Start is called before the first frame update
     protected override void Start()

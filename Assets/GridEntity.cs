@@ -32,10 +32,14 @@ public class GridEntity : MonoBehaviour
         get => _health; set
         {
             _health = Mathf.Clamp(value, -maxHealth, maxHealth);
+            healthbar?.SetHP(health / maxHealth);
             onChangeHealth?.Invoke(_health);
         }
     }
     public UnityEvent<float> onChangeHealth;
+
+    private HPBar healthbar;
+
 
     public float biteDamage = 190;
     public float biteSelfHeal = 70;
@@ -43,7 +47,9 @@ public class GridEntity : MonoBehaviour
     [SerializeField] private MeshRenderer renderer;
     private bool _isZombie;
 
-    protected virtual void Awake() { }
+    protected virtual void Awake() {
+        healthbar = GetComponentInChildren<HPBar>();
+    }
 
     protected virtual void Start()
     {
