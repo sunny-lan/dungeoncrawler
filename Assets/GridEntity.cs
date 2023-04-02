@@ -14,8 +14,6 @@ public class GridEntity : MonoBehaviour
             if (value != _isZombie)
             {
                 _isZombie = value;
-                if (renderer)
-                    renderer.material.color = !_isZombie ? Color.green : Color.red;
                 if (_isZombie)
                     needToBite = bitesToHuman;
                 onChangeZombieStatus?.Invoke(_isZombie);
@@ -46,16 +44,18 @@ public class GridEntity : MonoBehaviour
     public float biteDamage = 190;
     public float biteSelfHeal = 70;
 
-    [SerializeField] private MeshRenderer renderer;
     private bool _isZombie;
+
+    protected GameManager gameManager { get; private set; }
 
     protected virtual void Awake() {
         healthbar = GetComponentInChildren<HPBar>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     protected virtual void Start()
     {
-        GameManager.Instance.RegisterEntity(this);
+        gameManager.RegisterEntity(this);
         pos.x = Mathf.FloorToInt(transform.position.x);
         pos.y = Mathf.FloorToInt(transform.position.z);
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid

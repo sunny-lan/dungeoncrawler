@@ -9,6 +9,21 @@ public class EnemyController : GridEntity
     [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
     [SerializeField] EnemyTelegraphController telegraphController;
 
+    [SerializeField] GameObject zombieModel;
+    [SerializeField] GameObject guardModel;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // TODO outline not working for zombie
+        onChangeZombieStatus.AddListener(isZombie =>
+        {
+            zombieModel.SetActive(isZombie);
+            guardModel.SetActive(!isZombie);
+        });
+    }
+
     public void TelegraphTurn()
     {
         if (isZombie)
@@ -29,7 +44,7 @@ public class EnemyController : GridEntity
 
     public void DoTurn()
     {
-        var entity = GameManager.Instance.GetEntityAt(pos + telegraphController.GetDirection());
+        var entity = gameManager.GetEntityAt(pos + telegraphController.GetDirection());
         if (telegraphController.GetTelegraphType() == EnemyTelegraphController.TelgraphType.MOVE)
         {
             if (entity == null)
@@ -76,7 +91,7 @@ public class EnemyController : GridEntity
         for (int i = 0; i < 4; i++)
         {
             delta = dirs[Random.Range(0, dirs.Count)];
-            var entity = GameManager.Instance.GetEntityAt(pos + delta);
+            var entity = gameManager.GetEntityAt(pos + delta);
             if (entity == null)
             {
                 dirs.Remove(delta);
@@ -93,7 +108,7 @@ public class EnemyController : GridEntity
 
     private bool TelegraphMove(bool targetIsZombie, bool moveTowardTarget)
     {
-        var visible = GameManager.Instance.GetAllEntitiesVisibleBy(this);
+        var visible = gameManager.GetAllEntitiesVisibleBy(this);
         bool seesTarget = false;
         Vector2Int nearestTargetPos = pos;
         float distToNearestTarget = Mathf.Infinity;
@@ -135,7 +150,7 @@ public class EnemyController : GridEntity
 
             foreach (var dir in dirs)
             {
-                if (GameManager.Instance.IsWalkable(pos + dir))
+                if (gameManager.IsWalkable(pos + dir))
                 {
                     telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir);
                     return true;
@@ -152,7 +167,7 @@ public class EnemyController : GridEntity
         // more likely to continue moving in the same direction it was going
         Vector2Int delta = lastMoveDir;
 
-        if (!GameManager.Instance.IsWalkable(pos + delta) || Random.value < randomMoveChance)
+        if (!gameManager.IsWalkable(pos + delta) || Random.value < randomMoveChance)
         {
             var dirs = new List<Vector2Int>()
             {
@@ -166,7 +181,7 @@ public class EnemyController : GridEntity
             for (int i = 0; i < 4; i++)
             {
                 delta = dirs[Random.Range(0, dirs.Count)];
-                if (GameManager.Instance.IsWalkable(pos + delta))
+                if (gameManager.IsWalkable(pos + delta))
                 {
                     break;
                 }
@@ -183,6 +198,7 @@ public class EnemyController : GridEntity
 
     public override void GetBitten(GridEntity by)
     {
+        base.GetBitten(by);
         TelegraphTurn(); // TODO Stun when zombified
     }
 }

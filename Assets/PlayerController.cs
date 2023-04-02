@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerController : GridEntity
 {
-    private GameManager gameManager;
     private Camera camera;
     [SerializeField] TMP_Text statusText;
 
@@ -14,7 +13,6 @@ public class PlayerController : GridEntity
     {
         base.Awake();
 
-        gameManager = FindObjectOfType<GameManager>();
         camera = GetComponentInChildren<Camera>();
     }
     // Start is called before the first frame update
@@ -104,7 +102,7 @@ public class PlayerController : GridEntity
             return;
         }
 
-        Outline hitOutline = hitObj.GetOrAddComponent<Outline>();
+        Outline hitOutline = hitObj.GetComponentInChildren<Outline>();
         if (hitOutline != lastOutline)
         {
             hitOutline.OutlineWidth = 5;

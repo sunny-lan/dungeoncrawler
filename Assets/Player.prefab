@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281624571912004767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 336872187952860529}
   - component: {fileID: 9061129874393598238}
-  - component: {fileID: 7411564338878572007}
+  - component: {fileID: 353626821061354400}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -239,15 +239,14 @@ MonoBehaviour:
       m_Calls: []
   biteDamage: 190
   biteSelfHeal: 70
-  renderer: {fileID: 0}
   bittenMaxHeatlh: -10
   bitesToHuman: 3
   reviveMinHealth: 50
   statusText: {fileID: 2712440779324661828}
   biteRange: 1.5
   gunRange: 10
---- !u!65 &7411564338878572007
-BoxCollider:
+--- !u!136 &353626821061354400
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -256,9 +255,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.25
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &4604031056793622162
 GameObject:
   m_ObjectHideFlags: 0
