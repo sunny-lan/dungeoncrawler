@@ -6,24 +6,39 @@ using UnityEngine.Events;
 public class GridEntity : MonoBehaviour
 {
     public UnityEvent<bool> onChangeZombieStatus;
-    public bool isZombie;
+    public bool isZombieInitial = false;
+    public bool isZombie
+    {
+        get => _isZombie; set
+        {
+            _isZombie = value;
+            if (renderer)
+                renderer.material.color = _isZombie ? Color.green : Color.red;
+            onChangeZombieStatus?.Invoke(_isZombie);
+        }
+    }
 
     public Vector2Int pos;
     public Transform raycastCenter;
 
+    public float maxHealth = 100;
     public float initialHealth = 100;
     private float _health;
     public float health
     {
         get => _health; set
         {
-            _health = value;
-            onChangeHealth?.Invoke(value);
+            _health = Mathf.Clamp(value, -maxHealth, maxHealth);
+            onChangeHealth?.Invoke(_health);
         }
     }
     public UnityEvent<float> onChangeHealth;
 
+    public float biteDamage = 190;
+    public float biteSelfHeal = 70;
+
     [SerializeField] private MeshRenderer renderer;
+    private bool _isZombie;
 
     protected virtual void Awake() { }
 
@@ -32,22 +47,13 @@ public class GridEntity : MonoBehaviour
         return isZombie;
     }
 
-    [ContextMenu("SetIsZombie")]
-    public virtual void SetIsZombie(bool isZomb = true)
-    {
-        isZombie = isZomb;
-        onChangeZombieStatus?.Invoke(isZombie);
-        if (renderer)
-            renderer.material.color = isZomb ? Color.green : Color.red;
-    }
-
     protected virtual void Start()
     {
         GameManager.Instance.RegisterEntity(this);
         pos.x = Mathf.FloorToInt(transform.position.x);
         pos.y = Mathf.FloorToInt(transform.position.z);
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
-        SetIsZombie(isZombie); //sus but whatever
+        isZombie = isZombieInitial;
         health = initialHealth;
     }
     protected virtual void Update()
@@ -58,11 +64,13 @@ public class GridEntity : MonoBehaviour
     {
         Debug.Assert(by.GetIsZombie(), $"{by.name} was not a zombie");
         Debug.Log($"{name} got bitten by {by.name}");
-        SetIsZombie();
+        isZombie = true;
     }
 
-    public virtual void GetDamaged(GridEntity by, float dmg)
+    public virtual void Bite(GridEntity victim)
     {
-        health -= dmg;
+        victim.GetBitten(this);
+        victim.health = Mathf.Clamp(victim.health - biteDamage, -maxHealth, -1);
+        health += biteSelfHeal;
     }
 }

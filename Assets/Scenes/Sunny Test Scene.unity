@@ -616,13 +616,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}
+      propertyPath: isZombieInitial
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
       propertyPath: onChangeZombieStatus.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}
+      propertyPath: onChangeZombieStatus.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 585523692}
+    - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
       propertyPath: onChangeZombieStatus.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
+      propertyPath: onChangeZombieStatus.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeVolumeProfile
       objectReference: {fileID: 0}
     - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}

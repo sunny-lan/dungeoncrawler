@@ -7,9 +7,7 @@ public class PlayerController : GridEntity
 {
     private GameManager gameManager;
     private Camera camera;
-    private PostProcessingController postproc;
     private HPBar healthbar;
-    public float maxHealth = 100;
 
     protected override void Awake()
     {
@@ -17,7 +15,6 @@ public class PlayerController : GridEntity
 
         gameManager = FindObjectOfType<GameManager>();
         camera = GetComponentInChildren<Camera>();
-        postproc = FindObjectOfType<PostProcessingController>();
         healthbar = GetComponentInChildren<HPBar>();
 
         onChangeHealth.AddListener(health => healthbar.HP = health/maxHealth);
@@ -132,13 +129,13 @@ public class PlayerController : GridEntity
             bitesToHuman--;
             if(bitesToHuman == 0)
             {
-                SetIsZombie(false);
+                isZombie = true;
             }
         }
         else
         {
-            float bulletDmg = 1; // TODO
-            gridEntity.GetDamaged(this, bulletDmg);
+            float bulletDmg = 50; // TODO
+            gridEntity.health -= bulletDmg;
         }
 
         OnDidMove();
@@ -179,12 +176,5 @@ public class PlayerController : GridEntity
 
         needToBite = bitesToHuman;
         base.GetBitten(by);
-    }
-
-    public override void SetIsZombie(bool isZomb)
-    {
-        postproc.ChangeVolumeProfile(isZomb);
-
-        base.SetIsZombie(isZomb);
     }
 }

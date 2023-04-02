@@ -56,7 +56,7 @@ public class EnemyController : GridEntity
             }
             else
             {
-                entity.GetBitten(this);
+                Bite(entity);
                 return true;
             }
         }
