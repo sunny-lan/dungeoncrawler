@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,9 +8,7 @@ public class PlayerController : GridEntity
 {
     private GameManager gameManager;
     private Camera camera;
-    private PostProcessingController postproc;
-    private HPBar healthbar;
-    public float maxHealth = 100;
+    [SerializeField] TMP_Text statusText;
 
     protected override void Awake()
     {
@@ -17,15 +16,12 @@ public class PlayerController : GridEntity
 
         gameManager = FindObjectOfType<GameManager>();
         camera = GetComponentInChildren<Camera>();
-        postproc = FindObjectOfType<PostProcessingController>();
-        healthbar = GetComponentInChildren<HPBar>();
-
-        onChangeHealth.AddListener(health => healthbar.HP = health/maxHealth);
     }
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        UpdateStatus();
     }
 
     int moveCnt = 0;
@@ -87,7 +83,7 @@ public class PlayerController : GridEntity
 
     void CheckPlayerAction()
     {
-        float range = GetIsZombie() ? biteRange : gunRange;
+        float range = isZombie ? biteRange : gunRange;
 
         var center =  camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         bool didHitEnemy = Physics.Raycast(center, out var hitInfo, range, ~LayerMask.GetMask("Player"));
@@ -127,22 +123,17 @@ public class PlayerController : GridEntity
             return;
 
         var gridEntity = hitObj.GetComponent<GridEntity>();
-        if (GetIsZombie())
+        if (isZombie)
         {
-            if (gridEntity.GetIsZombie())
+            if (gridEntity.isZombie)
                 return;
 
-            gridEntity.GetBitten(this);
-            bitesToHuman--;
-            if(bitesToHuman == 0)
-            {
-                SetIsZombie(false);
-            }
+            Bite(gridEntity);
         }
         else
         {
-            float bulletDmg = 1; // TODO
-            gridEntity.GetDamaged(this, bulletDmg);
+            float bulletDmg = 50; // TODO
+            gridEntity.health -= bulletDmg;
         }
 
         OnDidMove();
@@ -169,26 +160,23 @@ public class PlayerController : GridEntity
 
     }
 
-    public int bitesToHuman = 3;
+    void UpdateStatus()
+    {
+        if (isZombie)
+            statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
+        else
+            statusText.text = $"You are a human.";
+    }
 
-    int needToBite;
+    public override void Bite(GridEntity victim)
+    {
+        base.Bite(victim);
+        UpdateStatus();
+    }
 
     public override void GetBitten(GridEntity by)
     {
-        if (GetIsZombie())
-        {
-            Debug.Log("Zombie shouldn't be bitten");
-            return;
-        }
-
-        needToBite = bitesToHuman;
         base.GetBitten(by);
-    }
-
-    public override void SetIsZombie(bool isZomb)
-    {
-        postproc.ChangeVolumeProfile(isZomb);
-
-        base.SetIsZombie(isZomb);
+        UpdateStatus();
     }
 }

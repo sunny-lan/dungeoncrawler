@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HPBar : MonoBehaviour
+public interface HPBar
+{
+    public void SetHP(float hp);
+}
+
+public class PlayerHPBar : MonoBehaviour, HPBar
 {
     // Value between -1 and 1
     public float HP;
@@ -24,5 +29,10 @@ public class HPBar : MonoBehaviour
         scale = negative.localScale;
         scale.x = Mathf.Max(minWidth, -_hpLerp );
         negative.localScale = scale;
+    }
+
+    public void SetHP(float hp)
+    {
+        HP = hp;
     }
 }

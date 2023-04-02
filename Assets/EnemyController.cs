@@ -11,7 +11,7 @@ public class EnemyController : GridEntity
 
     public void TelegraphTurn()
     {
-        if (GetIsZombie())
+        if (isZombie)
         {
             if (!TelegraphAttack())
             {
@@ -36,14 +36,14 @@ public class EnemyController : GridEntity
             {
                 DoMove(telegraphController.GetDirection());  
             }
-            else if(GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
+            else if(isZombie && !entity.isZombie) // UNDONE guard ranged attack
             {
                 entity.GetBitten(this);
             }
         }
         else
         { 
-            if (entity && GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
+            if (entity && isZombie && !entity.isZombie) // UNDONE guard ranged attack
             {
                 entity.GetBitten(this);
             }
@@ -81,7 +81,7 @@ public class EnemyController : GridEntity
             {
                 dirs.Remove(delta);
             }
-            else if (GetIsZombie() && !entity.GetIsZombie()) // UNDONE guard ranged attack
+            else if (isZombie && !entity.isZombie) // UNDONE guard ranged attack
             {
                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta);   
                return true;
@@ -100,7 +100,7 @@ public class EnemyController : GridEntity
 
         foreach (var entity in visible)
         {
-            if (entity.GetIsZombie() == targetIsZombie) // I see a target
+            if (entity.isZombie == targetIsZombie) // I see a target
             {
                 Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
                 seesTarget = true;
@@ -181,9 +181,8 @@ public class EnemyController : GridEntity
         return true;
     }
 
-    public override void SetIsZombie(bool isZomb = true)
+    public override void GetBitten(GridEntity by)
     {
-        base.SetIsZombie(isZomb);
         TelegraphTurn(); // TODO Stun when zombified
     }
 }
