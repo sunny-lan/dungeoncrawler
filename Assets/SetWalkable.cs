@@ -14,7 +14,13 @@ public class SetWalkable : MonoBehaviour
 
         // Find area this object covers, and set iswalkable to false
         var center = transform.position;
-        var size = transform.lossyScale;
+        var size = transform.localScale;
+
+        if(transform.rotation.eulerAngles.y is (>85 and <95) or (>265 and <275))
+        {
+            size = new(size.z, size.y, size.x);
+        }
+
         int stx = Mathf.CeilToInt(center.x - size.x / 2);
         int sty = Mathf.CeilToInt(center.z - size.z / 2);
         int edx = Mathf.FloorToInt(center.x + size.x / 2);
