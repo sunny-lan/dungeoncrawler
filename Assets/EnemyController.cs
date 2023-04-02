@@ -23,6 +23,7 @@ public class EnemyController : GridEntity
         {
             if (entity.GetIsZombie())
             {
+                Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
                 seesZombie = true;
                 if (Vector2Int.Distance(pos, entity.pos) < distToNearestZombie)
                 {

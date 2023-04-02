@@ -83,6 +83,13 @@ public class GameManager : MonoBehaviour
 
     public bool IsWalkable(Vector2Int pos)
     {
+        foreach (var entity in entities)
+        {
+            if (entity.pos == pos)
+            {
+                return false;
+            }
+        }
         return walkable.GetValueOrDefault(pos, true);
     }
 

@@ -24,6 +24,7 @@ public class GridEntity : MonoBehaviour
         GameManager.Instance.RegisterEntity(this);
         pos.x = Mathf.FloorToInt(transform.position.x);
         pos.y = Mathf.FloorToInt(transform.position.z);
+        transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
     }
     protected virtual void Update()
     {
