@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5892931663940179484}
   - component: {fileID: 5892931663940179485}
   - component: {fileID: 7109449729282233171}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266ec6b3e26d9bf4592607ecb9762999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onChangeZombieStatus:
+    m_PersistentCalls:
+      m_Calls: []
   pos: {x: 0, y: 0}
   raycastCenter: {fileID: 2074524523674864474}
   randomMoveChance: 0.25

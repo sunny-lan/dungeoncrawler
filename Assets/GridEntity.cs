@@ -6,9 +6,12 @@ using UnityEngine.Events;
 public class GridEntity : MonoBehaviour
 {
     public UnityEvent<bool> onChangeZombieStatus;
-    protected bool isZombie;
+    public bool isZombie;
     public Vector2Int pos;
     public Transform raycastCenter;
+    public float health;
+
+    protected virtual void Awake() { }
 
     public virtual bool GetIsZombie()
     {
@@ -16,9 +19,9 @@ public class GridEntity : MonoBehaviour
     }
 
     [ContextMenu("SetIsZombie")]
-    public virtual void SetIsZombie()
+    public virtual void SetIsZombie(bool isZomb = true)
     {
-        isZombie = true;
+        isZombie = isZomb;
         onChangeZombieStatus?.Invoke(isZombie);
     }
 
@@ -28,9 +31,19 @@ public class GridEntity : MonoBehaviour
         pos.x = Mathf.FloorToInt(transform.position.x);
         pos.y = Mathf.FloorToInt(transform.position.z);
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
-        onChangeZombieStatus?.Invoke(isZombie);
+        SetIsZombie(isZombie); //sus but whatever
     }
     protected virtual void Update()
     {
+    }
+
+    public virtual void GetBitten(GridEntity by)
+    {
+        SetIsZombie();
+    }
+
+    public virtual void GetDamaged(GridEntity by, float dmg)
+    {
+        health -= dmg;
     }
 }
