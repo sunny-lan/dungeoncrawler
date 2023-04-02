@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -189,7 +189,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c2f7930c6f21d41bd4c83c89691ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  mouseSensitivity: 3
+  playerBody: {fileID: 336872187952860529}
+  camera: {fileID: 2511934848427419689}
+  invertY: 1
 --- !u!1 &421899082495337189
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +580,7 @@ MonoBehaviour:
   pos: {x: 0, y: 0}
   raycastCenter: {fileID: 9006591227827930261}
   health: 0
+  renderer: {fileID: 0}
   biteRange: 1.5
   gunRange: 10
   bitesToHuman: 3
