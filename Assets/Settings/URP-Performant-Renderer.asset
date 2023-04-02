@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Bits: 64
   outlinesOccluderLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   outlineSettings:
     outlineColor: {r: 1, g: 0.5887934, b: 0, a: 1}
     outlineScale: 1
@@ -90,7 +90,7 @@ MonoBehaviour:
     colorFormat: 0
     depthBufferBits: 16
     filterMode: 0
-    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 0}
     perObjectData: 0
     enableDynamicBatching: 0
     enableInstancing: 0
