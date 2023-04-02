@@ -9,31 +9,51 @@ public class EnemyController : GridEntity
     [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
     public void DoTurn()
     {
-        Move();
+        if (GetIsZombie())
+        {
+            DoZombieMove();
+        }
+        else
+        {
+            DoGuardMove();
+        }
     }
 
-    private void Move()
+    private void DoZombieMove()
+    {
+        // move toward humans
+        DoEnemyMove(targetIsZombie: false, moveTowardTarget: true);
+    }
+
+    private void DoGuardMove()
+    {
+        // move away from zombies
+        DoEnemyMove(targetIsZombie: true, moveTowardTarget: false);
+    }
+
+    private void DoEnemyMove(bool targetIsZombie, bool moveTowardTarget)
     {
         var visible = GameManager.Instance.GetAllEntitiesVisibleBy(this);
-        bool seesZombie = false;
-        Vector2Int nearestZombiePos = pos;
-        float distToNearestZombie = Mathf.Infinity;
+        bool seesTarget = false;
+        Vector2Int nearestTargetPos = pos;
+        float distToNearestTarget = Mathf.Infinity;
 
         foreach (var entity in visible)
         {
-            if (entity.GetIsZombie())
+            if (entity.GetIsZombie() == targetIsZombie) // see a target
             {
                 Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
-                seesZombie = true;
-                if (Vector2Int.Distance(pos, entity.pos) < distToNearestZombie)
+                seesTarget = true;
+                var distToTarget = Vector2Int.Distance(pos, entity.pos);
+                if (distToTarget < distToNearestTarget)
                 {
-                    nearestZombiePos = entity.pos;
-                    distToNearestZombie = Vector2Int.Distance(pos, entity.pos);
+                    nearestTargetPos = entity.pos;
+                    distToNearestTarget = distToTarget;
                 }
             }
         }
 
-        if (seesZombie)
+        if (seesTarget)
         {
             var dirs = new List<Vector2Int>()
             {
@@ -44,7 +64,14 @@ public class EnemyController : GridEntity
             };
 
 
-            dirs = dirs.OrderByDescending(x => Vector2Int.Distance(x + pos, nearestZombiePos)).ToList();
+            if (moveTowardTarget)
+            {
+                dirs = dirs.OrderBy(x => Vector2Int.Distance(x + pos, nearestTargetPos)).ToList();
+            }
+            else
+            {
+                dirs = dirs.OrderByDescending(x => Vector2Int.Distance(x + pos, nearestTargetPos)).ToList();
+            }
 
             foreach (var dir in dirs)
             {
@@ -62,6 +89,7 @@ public class EnemyController : GridEntity
             MoveRandomly();
         }
     }
+
 
     private void MoveRandomly()
     {

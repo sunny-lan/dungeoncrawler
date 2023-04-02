@@ -114,8 +114,11 @@ MonoBehaviour:
   onChangeZombieStatus:
     m_PersistentCalls:
       m_Calls: []
+  isZombie: 0
   pos: {x: 0, y: 0}
   raycastCenter: {fileID: 2074524523674864474}
+  health: 0
+  renderer: {fileID: 5892931663940179484}
   randomMoveChance: 0.25
 --- !u!1 &7660507070454178558
 GameObject:

@@ -10,6 +10,7 @@ public class GridEntity : MonoBehaviour
     public Vector2Int pos;
     public Transform raycastCenter;
     public float health;
+    [SerializeField] private MeshRenderer renderer;
 
     protected virtual void Awake() { }
 
@@ -23,6 +24,8 @@ public class GridEntity : MonoBehaviour
     {
         isZombie = isZomb;
         onChangeZombieStatus?.Invoke(isZombie);
+        if (renderer)
+            renderer.material.color = isZomb ? Color.green : Color.red;
     }
 
     protected virtual void Start()
@@ -39,6 +42,7 @@ public class GridEntity : MonoBehaviour
 
     public virtual void GetBitten(GridEntity by)
     {
+        Debug.Log($"{name} got bitten by {by.name}");
         SetIsZombie();
     }
 
