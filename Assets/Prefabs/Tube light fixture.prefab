@@ -203,6 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4339328165403155374}
+  - component: {fileID: 8795354526248350740}
   m_Layer: 0
   m_Name: Tube light fixture
   m_TagString: Untagged
@@ -230,6 +231,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8795354526248350740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586236453377388755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fce8b92448faf7438825e9ce9f32d4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lights:
+  - {fileID: 6711144966084553529}
+  minIntensity: 0
+  maxIntensity: 1
+  smoothing: 5
 --- !u!1 &8848079333580896285
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,6 +412,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tube light (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5165960548003018128, guid: ee06bfa781270ee40baccc10cc9e2471,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee06bfa781270ee40baccc10cc9e2471, type: 3}
 --- !u!4 &3939909663398604876 stripped
@@ -402,6 +425,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3662664787909105879}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6711144966084553529 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8067812744079455214, guid: ee06bfa781270ee40baccc10cc9e2471,
+    type: 3}
+  m_PrefabInstance: {fileID: 3662664787909105879}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8062200e45db13e439093332dc4278cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5056110157082801285
 PrefabInstance:
   m_ObjectHideFlags: 0
