@@ -16,4 +16,20 @@ public static class Util
     {
         return new Vector2Int(-v.x, -v.y);
     }
+
+    public static int Sign(this int i)
+    {
+        if (i == 0)
+        {
+            return 0;
+        }
+        else if (i > 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }

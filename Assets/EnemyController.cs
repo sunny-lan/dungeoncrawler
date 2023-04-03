@@ -12,6 +12,8 @@ public class EnemyController : GridEntity
     [SerializeField] GameObject zombieModel;
     [SerializeField] GameObject guardModel;
 
+    [SerializeField] int shootRange;
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,7 +30,7 @@ public class EnemyController : GridEntity
     {
         if (isZombie)
         {
-            if (!TelegraphAttack())
+            if (!TelegraphBite())
             {
                 // move toward humans
                 TelegraphMove(targetIsZombie: false, moveTowardTarget: true);
@@ -36,9 +38,11 @@ public class EnemyController : GridEntity
         }
         else
         {
-            // UNDONE guard ranged attack
-            // move away from zombies
-            TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
+            if (!TelegraphShoot())
+            {
+                // move away from zombies
+                TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
+            }
         }
     }
 
@@ -51,16 +55,26 @@ public class EnemyController : GridEntity
             {
                 DoMove(telegraphController.GetDirection());  
             }
-            else if(isZombie && !entity.isZombie) // UNDONE guard ranged attack
+            else if (isZombie && !entity.isZombie)
             {
-                entity.GetBitten(this);
+                Bite(entity);
+            }
+            else if (!isZombie && entity is PlayerController)
+            {
+                float bulletDmg = 50; // TODO put into function
+                entity.health -= bulletDmg;
             }
         }
         else
         { 
-            if (entity && isZombie && !entity.isZombie) // UNDONE guard ranged attack
+            if (entity && isZombie && !entity.isZombie)
             {
-                entity.GetBitten(this);
+                Bite(entity);
+            }
+            else if (!isZombie && gameManager.CanEntitySee(this, gameManager.player))
+            {
+                float bulletDmg = 50; // TODO put into function
+                gameManager.player.health -= bulletDmg;
             }
         }
 
@@ -74,7 +88,7 @@ public class EnemyController : GridEntity
         lastMoveDir = delta;
     }
 
-    private bool TelegraphAttack()
+    private bool TelegraphBite()
     {
         // attack enemy in random direction, returns true if I can attack anyone, false otherwise
         Vector2Int delta = lastMoveDir;
@@ -92,17 +106,37 @@ public class EnemyController : GridEntity
         {
             delta = dirs[Random.Range(0, dirs.Count)];
             var entity = gameManager.GetEntityAt(pos + delta);
-            if (entity == null)
-            {
-                dirs.Remove(delta);
-            }
-            else if (isZombie && !entity.isZombie) // UNDONE guard ranged attack
+            
+            if (entity && !entity.isZombie)
             {
                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta);   
                return true;
             }
+            else
+            {
+                dirs.Remove(delta);
+            }
         }
 
+        return false;
+    }
+
+    private bool TelegraphShoot()
+    {
+        if (gameManager.player.isZombie)
+            return false;
+
+        if (gameManager.player.pos.x != pos.x && gameManager.player.pos.y != pos.y)
+            return false;
+
+        if (Vector2Int.Distance(gameManager.player.pos, pos) > shootRange)
+            return false;
+
+        if (gameManager.CanEntitySee90Degrees(this, gameManager.player))
+        {
+            telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, gameManager.player.pos - pos, shootRange);
+            return true;
+        }
         return false;
     }
 
@@ -110,27 +144,42 @@ public class EnemyController : GridEntity
     {
         var visible = gameManager.GetAllEntitiesVisibleBy(this);
         bool seesTarget = false;
-        Vector2Int nearestTargetPos = pos;
+        bool seesPlayer = false;
+        GridEntity nearestTarget = null;
         float distToNearestTarget = Mathf.Infinity;
 
         foreach (var entity in visible)
         {
+            if (entity is PlayerController)
+                seesPlayer = true;
+
             if (entity.isZombie == targetIsZombie) // I see a target
             {
-                Debug.DrawLine(raycastCenter.position, entity.raycastCenter.position, Color.red, 0.5f);
                 seesTarget = true;
                 var distToTarget = Vector2Int.Distance(pos, entity.pos);
                 if (distToTarget < distToNearestTarget)
                 {
-                    nearestTargetPos = entity.pos;
+                    nearestTarget = entity;
                     distToNearestTarget = distToTarget;
                 }
             }
         }
 
-        if (seesTarget)
-        {
-            var dirs = new List<Vector2Int>()
+        // TODO cache player
+        if (!isZombie && !gameManager.player.isZombie && seesPlayer && TelegraphMoveInRelationToEntity(gameManager.player, true))
+            return true;
+
+        if (seesTarget && TelegraphMoveInRelationToEntity(nearestTarget, moveTowardTarget))
+            return true;
+
+        return TelegraphRandomMove();
+    }
+
+    private bool TelegraphMoveInRelationToEntity(GridEntity target, bool moveTowardTarget)
+    {
+        Debug.Assert(target);
+        Debug.DrawLine(raycastCenter.position, target.raycastCenter.position, Color.red, 0.5f);
+        var dirs = new List<Vector2Int>()
             {
                 Vector2Int.up,
                 Vector2Int.left,
@@ -139,28 +188,26 @@ public class EnemyController : GridEntity
             };
 
 
-            if (moveTowardTarget)
-            {
-                dirs = dirs.OrderBy(x => Vector2Int.Distance(x + pos, nearestTargetPos)).ToList();
-            }
-            else
-            {
-                dirs = dirs.OrderByDescending(x => Vector2Int.Distance(x + pos, nearestTargetPos)).ToList();
-            }
+        if (moveTowardTarget)
+        {
+            dirs = dirs.OrderBy(x => Vector2Int.Distance(x + pos, target.pos)).ToList();
+        }
+        else
+        {
+            dirs = dirs.OrderByDescending(x => Vector2Int.Distance(x + pos, target.pos)).ToList();
+        }
 
-            foreach (var dir in dirs)
+        foreach (var dir in dirs)
+        {
+            if (gameManager.IsWalkable(pos + dir))
             {
-                if (gameManager.IsWalkable(pos + dir))
-                {
-                    telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir);
-                    return true;
-                }
+                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir);
+                return true;
             }
         }
 
-        return TelegraphRandomMove();
+        return false;
     }
-
 
     private bool TelegraphRandomMove()
     {
