@@ -55,16 +55,26 @@ public class EnemyController : GridEntity
             {
                 DoMove(telegraphController.GetDirection());  
             }
-            else if (isZombie && !entity.isZombie) // UNDONE guard ranged attack
+            else if (isZombie && !entity.isZombie)
             {
-                entity.GetBitten(this);
+                Bite(entity);
+            }
+            else if (!isZombie && entity is PlayerController)
+            {
+                float bulletDmg = 50; // TODO put into function
+                entity.health -= bulletDmg;
             }
         }
         else
         { 
-            if (entity && isZombie && !entity.isZombie) // UNDONE guard ranged attack
+            if (entity && isZombie && !entity.isZombie)
             {
-                entity.GetBitten(this);
+                Bite(entity);
+            }
+            else if (!isZombie && gameManager.CanEntitySee(this, gameManager.player))
+            {
+                float bulletDmg = 50; // TODO put into function
+                gameManager.player.health -= bulletDmg;
             }
         }
 
