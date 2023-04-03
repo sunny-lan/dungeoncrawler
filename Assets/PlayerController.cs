@@ -108,7 +108,7 @@ public class PlayerController : GridEntity
         if (!Input.GetMouseButtonDown(0))
             return;
 
-        if (hitObj.layer == LayerMask.NameToLayer("Enemy"))
+        if (hitObj && hitObj.layer == LayerMask.NameToLayer("Enemy"))
         {
             var gridEntity = hitObj.GetComponent<GridEntity>();
             if (isZombie)

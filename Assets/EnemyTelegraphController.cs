@@ -10,12 +10,13 @@ public class EnemyTelegraphController : MonoBehaviour
 
     [SerializeField] private Transform indicatorPivot;
 
-    public void UpdateTelegraph(TelgraphType type, Vector2Int direction)
+    public void UpdateTelegraph(TelgraphType type, Vector2Int direction, int length = 1)
     {
         this.type = type;
         this.direction = direction;
 
         indicatorPivot.gameObject.SetActive(true);
+        indicatorPivot.localScale = new Vector3(1, 1, length);
         transform.forward = new Vector3(direction.x, 0, direction.y);
     }
 

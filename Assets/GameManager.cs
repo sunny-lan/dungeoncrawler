@@ -20,13 +20,16 @@ public class GameManager : MonoBehaviour
     }
 
     Dictionary<Vector2Int, bool> walkable = new ();
-    [SerializeField] private List<GridEntity> entities;
-    [SerializeField] private PlayerController player;
+    private List<GridEntity> entities;
+    public PlayerController player { get; private set; }
 
     public void RegisterEntity(GridEntity entity)
     {
         if (entities == null)
             entities = new List<GridEntity>();
+
+        if (entity is PlayerController)
+            player = entity as PlayerController;
 
         entities.Add(entity);
     }
@@ -61,37 +64,124 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    public List<GridEntity> GetAllEntitiesVisibleAnd90Degrees(GridEntity origin)
+    {
+        GridEntity north = null;
+        GridEntity south = null;
+        GridEntity east = null;
+        GridEntity west = null;
+
+        foreach (var entity in entities)
+        {
+            if (entity == origin)
+                continue;
+
+            var delta = entity.pos - origin.pos;
+
+            if (delta.x != 0 && delta.y != 0)
+                continue;
+
+            if (delta.x == 0)
+            {
+                // north or south
+                if (delta.y > 0 && entity.pos.y < north.pos.y)
+                {
+                    north = entity;
+                }
+                else if (delta.y < 0 && entity.pos.y > south.pos.y)
+                {
+                    south = entity;
+                }
+            } 
+            else
+            {
+                // east or west
+                if (delta.x > 0 && entity.pos.x < east.pos.x)
+                {
+                    east = entity;
+                }
+                else if (delta.x < 0 && entity.pos.x > west.pos.x)
+                {
+                    west = entity;
+                }
+            }
+        }
+
+        var ret = new List<GridEntity>();
+        if (north) ret.Add(north);
+        if (south) ret.Add(south);
+        if (east) ret.Add(east);
+        if (west) ret.Add(west);
+        return ret;
+    }
+
     public List<GridEntity> GetAllEntitiesVisibleBy(GridEntity origin)
     {
         Physics.SyncTransforms();
         var originRaycastCenter = origin.raycastCenter.position;
-        var found = new List<GridEntity>();
+        var visible = new List<GridEntity>();
 
         foreach (var entity in entities)
         {
-            if (entity == origin || found.Contains(entity))
+            if (entity == origin || visible.Contains(entity))
+                continue;
+            
+            if (CanEntitySee(origin, entity))
+                visible.Add(entity);
+        }
+        return visible;
+    }
+
+    public bool CanEntitySee90Degrees(GridEntity from, GridEntity to)
+    {
+
+        if (from.pos.x != to.pos.x && from.pos.y != to.pos.y)
+            return false;
+
+        // normalize
+        var delta = to.pos - from.pos;
+        var dir = delta;
+        dir.x = dir.x.Sign();
+        dir.y = dir.y.Sign();
+
+        Debug.Assert(dir * (int) delta.magnitude == delta);
+
+        for (int i = 1; i < delta.magnitude; i++)
+        {
+            var checkPos = from.pos + dir * i;
+
+            if (!IsWalkable(checkPos))
+                return false;
+
+            var between = GetEntityAt(from.pos + dir * i);
+
+            if (between && between != from && between != to)
+                return false;
+        }
+
+        return true;
+    }
+    public bool CanEntitySee(GridEntity from, GridEntity to)
+    {
+        var fromRaycastCenter = from.raycastCenter.position;
+        var toRaycastCenter = to.raycastCenter.position;
+        var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 1000);
+
+        System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
+
+        foreach (var hit in hits)
+        {
+            var hitEntity = hit.transform.GetComponent<GridEntity>();
+
+            if (hitEntity == from)
                 continue;
 
-            var targetRaycastCenter = entity.raycastCenter.position;
+            if (hitEntity != null)
+                return true;
 
-            var hits = Physics.RaycastAll(originRaycastCenter, targetRaycastCenter - originRaycastCenter, 1000);
-
-            System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
-
-            foreach (var hit in hits)
-            {
-                var hitEntity = hit.transform.GetComponent<GridEntity>();
-
-                if (hitEntity == origin)
-                    continue;
-
-                if (hitEntity != null)
-                    found.Add(hitEntity);
-
-                break; // either hit a wall or an entity.
-            }
+            return false; // either hit a wall or another entity.
         }
-        return found;
+        return false;
     }
 
     public bool IsWalkable(Vector2Int pos)
