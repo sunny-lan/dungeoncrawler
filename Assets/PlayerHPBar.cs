@@ -18,17 +18,22 @@ public class PlayerHPBar : MonoBehaviour, HPBar
     public float lerpSpeed = 1;
     public float minWidth = 0.02f;
 
+    void Start()
+    {
+        _hpLerp = HP;
+    }
+
     private void Update()
     {
         _hpLerp = Mathf.Lerp(_hpLerp, HP, Time.deltaTime * lerpSpeed);
 
-        var scale = positive.localScale;
-        scale.x = Mathf.Max(minWidth, _hpLerp );
-        positive.localScale = scale;
+        var scale = positive.anchorMin;
+        scale.x = 1 - Mathf.Max(minWidth, _hpLerp );
+        positive.anchorMin = scale;
 
-        scale = negative.localScale;
+        scale = negative.anchorMax;
         scale.x = Mathf.Max(minWidth, -_hpLerp );
-        negative.localScale = scale;
+        negative.anchorMax = scale;
     }
 
     public void SetHP(float hp)

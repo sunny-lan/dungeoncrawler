@@ -7,6 +7,8 @@ public class SetWalkable : MonoBehaviour
 {
     GameManager gameManager;
 
+    public bool walkable = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,7 @@ public class SetWalkable : MonoBehaviour
         for (int x = stx; x <= edx; x++)
             for (int y = sty; y <= edy; y++)
             {
-                gameManager.SetWalkable(new(x, y), false);
+                gameManager.SetWalkable(new(x, y), walkable);
             }
     }
 }

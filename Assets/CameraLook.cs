@@ -6,7 +6,7 @@ public class CameraLook : MonoBehaviour
 {
     [SerializeField] float mouseSensitivity = 3f;
     [SerializeField] Transform playerBody = null;
-    [SerializeField] Transform camera = null;
+    [SerializeField] Transform playerCam = null;
     [SerializeField] bool invertY = true;
     float pitch = 0f;
 
@@ -27,7 +27,7 @@ public class CameraLook : MonoBehaviour
 
         pitch += (invertY)? -mouseY:mouseY;
         pitch = Mathf.Clamp(pitch, -90f, 90f);
-        camera.localRotation = Quaternion.Euler(Vector3.right * pitch);
+        playerCam.localRotation = Quaternion.Euler(Vector3.right * pitch);
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }

@@ -17,6 +17,11 @@ public static class Util
         return new Vector2Int(-v.x, -v.y);
     }
 
+    public static void SetEnabled(this MonoBehaviour c, bool enable)
+    {
+        c.enabled = enable;
+    }
+
     public static int Sign(this int i)
     {
         if (i == 0)
