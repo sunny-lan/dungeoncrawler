@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -93,8 +94,8 @@ public class PlayerController : GridEntity
 
     }
 
-    float biteRange = 1.5f;
-    float gunRange = 10f;
+    //public float biteRange = 1.5f;
+    //public float gunRange = 10f;
     float punchRange = 1.5f;
 
     float zombiePunchStrength = 10, humanPunchStength = 1;
