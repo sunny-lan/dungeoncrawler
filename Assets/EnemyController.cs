@@ -18,7 +18,6 @@ public class EnemyController : GridEntity
     {
         base.Awake();
 
-        // TODO outline not working for zombie
         onChangeZombieStatus.AddListener(isZombie =>
         {
             zombieModel.SetActive(isZombie);

@@ -34,6 +34,7 @@ public class GridEntity : MonoBehaviour
         {
             _health = Mathf.Clamp(value, -maxHealth, maxHealth);
             healthbar?.SetHP(health / maxHealth);
+            isZombie = _health <= 0;
             onChangeHealth?.Invoke(_health);
         }
     }
@@ -60,8 +61,9 @@ public class GridEntity : MonoBehaviour
         pos.x = Mathf.FloorToInt(transform.position.x);
         pos.y = Mathf.FloorToInt(transform.position.z);
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
-        isZombie = isZombieInitial;
         health = initialHealth;
+        isZombie = isZombieInitial;
+        needToBite = bitesToHuman;
 
         isInit = false;
     }
