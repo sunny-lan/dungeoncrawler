@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public interface HPBar
 {
@@ -13,6 +14,7 @@ public class PlayerHPBar : MonoBehaviour, HPBar
     public float HP;
     private float _hpLerp;
 
+    [SerializeField] RectTransform negativeAnimated, positiveAnimated;
     [SerializeField] RectTransform negative, positive;
 
     public float lerpSpeed = 1;
@@ -28,27 +30,34 @@ public class PlayerHPBar : MonoBehaviour, HPBar
     {
         _hpLerp = Mathf.Lerp(_hpLerp, HP, Time.deltaTime * lerpSpeed);
 
+        setTransforms(negative, positive, HP);
+        setTransforms(negativeAnimated, positiveAnimated, _hpLerp);
+    }
+
+
+    void setTransforms(RectTransform negative, RectTransform positive, float hp)
+    {
         if (flip)
         {
 
 
-            var scale = positive.anchorMin;
-            scale.x = 1 - Mathf.Max(minWidth, -_hpLerp);
+            var scale = this.positive.anchorMin;
+            scale.x = 1 - Mathf.Max(minWidth, -hp);
             negative.anchorMin = scale;
 
             scale = negative.anchorMax;
-            scale.x = Mathf.Max(minWidth, _hpLerp);
+            scale.x = Mathf.Max(minWidth, hp);
             positive.anchorMax = scale;
         }
         else
         {
 
-            var scale = positive.anchorMin;
-            scale.x = 1 - Mathf.Max(minWidth, _hpLerp);
+            var scale = this.positive.anchorMin;
+            scale.x = 1 - Mathf.Max(minWidth, hp);
             positive.anchorMin = scale;
 
             scale = negative.anchorMax;
-            scale.x = Mathf.Max(minWidth, -_hpLerp);
+            scale.x = Mathf.Max(minWidth, -hp);
             negative.anchorMax = scale;
         }
     }

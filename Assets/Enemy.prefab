@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 7109449729282233171}
   - component: {fileID: 4145373271523466863}
   - component: {fileID: 5580267715440816598}
+  - component: {fileID: 1818793359890158857}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -265,7 +266,6 @@ MonoBehaviour:
   onChangeZombieStatus:
     m_PersistentCalls:
       m_Calls: []
-  isZombieInitial: 0
   pos: {x: 0, y: 0}
   raycastCenter: {fileID: 2074524523674864474}
   maxHealth: 100
@@ -276,7 +276,6 @@ MonoBehaviour:
   biteDamage: 190
   biteSelfHeal: 70
   bittenMaxHeatlh: -10
-  bitesToHuman: 3
   reviveMinHealth: 50
   randomMoveChance: 0.25
   telegraphController: {fileID: 4145373271523466863}
@@ -311,10 +310,23 @@ CapsuleCollider:
   m_GameObject: {fileID: 5892931663940179486}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!65 &1818793359890158857
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5892931663940179486}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &6432511612485471374
 GameObject:

@@ -92,7 +92,7 @@ public class PlayerController : GridEntity
         {
             gameManager.DoEnemyTelegraph();
         }
-
+        UpdatePossibleActions();
     }
 
     //public float biteRange = 1.5f;
