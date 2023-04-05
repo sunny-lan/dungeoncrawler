@@ -22,6 +22,11 @@ public static class Util
         c.enabled = enable;
     }
 
+    public static int Manhattan(this Vector2Int a, Vector2Int b)
+    {
+        return Mathf.Abs(a.x-b.x)+Mathf.Abs(a.y-b.y);
+    }
+
     public static int Sign(this int i)
     {
         if (i == 0)

@@ -61,7 +61,7 @@ public class PlayerController : GridEntity
 
             // Determine height by raycasting down
             float y = transform.position.y;
-            if(Physics.Raycast(raycastCenter.position, Vector3.down, out var hitInfo, 2, LayerMask.GetMask("Floor")))
+            if (Physics.Raycast(raycastCenter.position, Vector3.down, out var hitInfo, 2, LayerMask.GetMask("Floor")))
             {
                 y = hitInfo.point.y;
             }
@@ -133,32 +133,28 @@ public class PlayerController : GridEntity
             {
                 if (isZombie)
                 {
-                    if (!gridEntity.isZombie && curRaycastInfo.distance <= biteRange)
+                    if (!gridEntity.isZombie && gridEntity.pos.Manhattan(pos) <= 1)
                     {
-                        possibleActions.Add(new()
-                        {
-                            name = "Bite",
-                            action = () => Bite(gridEntity),
-                        });
+                        possibleActions.Add(new BiteAction(gridEntity, this));
                     }
                 }
                 else
                 {
-                    if(curRaycastInfo.distance <= gunRange)
-                        possibleActions.Add(new()
-                        {
-                            name = "Shoot",
-                            action = () =>
-                            {
-                                float bulletDmg = 50; // TODO
-                                gridEntity.health -= bulletDmg;
-                            },
-                        });
+                    //if (curRaycastInfo.distance <= gunRange)
+                    //    possibleActions.Add(new()
+                    //    {
+                    //        name = "Shoot",
+                    //        action = () =>
+                    //        {
+                    //            float bulletDmg = 50; // TODO
+                    //            gridEntity.health -= bulletDmg;
+                    //        },
+                    //    });
                 }
             }
 
             var punchable = hitObj.GetComponentInChildren<IPunchable>();
-            if(punchable != null && ((MonoBehaviour)punchable).enabled)
+            if (punchable != null && ((MonoBehaviour)punchable).enabled)
             {
                 if (curRaycastInfo.distance <= punchRange)
                     possibleActions.Add(new()
@@ -166,7 +162,7 @@ public class PlayerController : GridEntity
                         name = "Punch",
                         action = () =>
                         {
-                            punchable.GetPunched(this, 
+                            punchable.GetPunched(this,
                                 isZombie ? zombiePunchStrength : humanPunchStength,
                                 curRaycastInfo.point - playerCam.transform.position);
                         }
@@ -209,20 +205,32 @@ public class PlayerController : GridEntity
     void UpdatePossibleActionsUI()
     {
         curRaycastedObj?.GetComponentInChildren<Outline>()?.SetEnabled(possibleActions.Count > 0);
-       
+
         actionsList.SetItems(possibleActions.Select((action, idx) =>
         {
-            return (inputTriggers[idx].name,action.name);
+            return (inputTriggers[idx].name, action.name.ToString());
         }));
+
+        Vector2Int? biteIndicator = null;
+        foreach (var action in possibleActions)
+        {
+            if(action is BiteAction biteAction)
+            {
+                biteIndicator = biteAction.victim.pos;
+            }
+        }
+
+        //TODO show bite indicator
     }
 
     bool CheckActions()
     {
-        for(int i = 0; i < possibleActions.Count; i++)
+        for (int i = 0; i < possibleActions.Count; i++)
         {
             if (inputTriggers[i].isDown())
             {
                 possibleActions[i].action();
+                OnDidMove();
                 return true;
             }
         }
@@ -281,10 +289,23 @@ public interface IPunchable
     public void GetPunched(GridEntity by, float strength, Vector3 direction);
 }
 
-public struct PlayerAction
+public class PlayerAction
 {
+
     public string name;
     public Action action;
+}
+
+public class BiteAction : PlayerAction
+{
+    public readonly GridEntity victim;
+
+    public BiteAction(GridEntity victim, GridEntity player)
+    {
+        this.victim = victim;
+        name = "Bite";
+        action = () => player.Bite(victim);
+    }
 }
 
 public struct InputTrigger
