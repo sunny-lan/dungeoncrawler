@@ -25,6 +25,7 @@ public class PlayerController : GridEntity
     protected override void Start()
     {
         base.Start();
+        biteIndicator.transform.parent = null;
         UpdateStatus();
     }
 
@@ -217,16 +218,26 @@ public class PlayerController : GridEntity
             return (inputTriggers[idx].name, action.name.ToString());
         }));
 
-        Vector2Int? biteIndicator = null;
+        Vector2Int? bitePos = null;
         foreach (var action in possibleActions)
         {
             if(action is BiteAction biteAction)
             {
-                biteIndicator = biteAction.victim.pos;
+                bitePos = biteAction.victim.pos;
             }
         }
 
-        //TODO show bite indicator
+        if(bitePos is Vector2Int bite)
+        {
+            biteIndicator.SetActive(true);
+            biteIndicator.transform.position = new(bite.x, 0, bite.y);
+        }
+        else
+        {
+            biteIndicator.SetActive(false);
+
+        }
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(canvas);
     }
 
