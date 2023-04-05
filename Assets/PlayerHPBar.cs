@@ -17,6 +17,7 @@ public class PlayerHPBar : MonoBehaviour, HPBar
 
     public float lerpSpeed = 1;
     public float minWidth = 0.02f;
+    public bool flip = false;
 
     void Start()
     {
@@ -27,13 +28,29 @@ public class PlayerHPBar : MonoBehaviour, HPBar
     {
         _hpLerp = Mathf.Lerp(_hpLerp, HP, Time.deltaTime * lerpSpeed);
 
-        var scale = positive.anchorMin;
-        scale.x = 1 - Mathf.Max(minWidth, _hpLerp );
-        positive.anchorMin = scale;
+        if (flip)
+        {
 
-        scale = negative.anchorMax;
-        scale.x = Mathf.Max(minWidth, -_hpLerp );
-        negative.anchorMax = scale;
+
+            var scale = positive.anchorMin;
+            scale.x = 1 - Mathf.Max(minWidth, -_hpLerp);
+            negative.anchorMin = scale;
+
+            scale = negative.anchorMax;
+            scale.x = Mathf.Max(minWidth, _hpLerp);
+            positive.anchorMax = scale;
+        }
+        else
+        {
+
+            var scale = positive.anchorMin;
+            scale.x = 1 - Mathf.Max(minWidth, _hpLerp);
+            positive.anchorMin = scale;
+
+            scale = negative.anchorMax;
+            scale.x = Mathf.Max(minWidth, -_hpLerp);
+            negative.anchorMax = scale;
+        }
     }
 
     public void SetHP(float hp)
