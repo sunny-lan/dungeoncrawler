@@ -193,9 +193,11 @@ public class EnemyController : GridEntity
     private bool TelegraphRandomMove()
     {
         // more likely to continue moving in the same direction it was going
-        Vector2Int delta = lastMoveDir;
-
-        if (!gameManager.IsWalkable(pos + delta) || Random.value < randomMoveChance)
+        if (gameManager.IsWalkable(pos + lastMoveDir) && Random.value >= randomMoveChance)
+        {
+            telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, lastMoveDir, isZombie);
+        }
+        else
         {
             var dirs = new List<Vector2Int>()
             {
@@ -208,7 +210,7 @@ public class EnemyController : GridEntity
             // pick random direction that we haven't tried yet
             for (int i = 0; i < 4; i++)
             {
-                delta = dirs[Random.Range(0, dirs.Count)];
+                var delta = dirs[Random.Range(0, dirs.Count)];
                 if (gameManager.IsWalkable(pos + delta))
                 {
                     telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta, isZombie);
