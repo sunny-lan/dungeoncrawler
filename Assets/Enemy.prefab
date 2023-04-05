@@ -205,6 +205,7 @@ MonoBehaviour:
   telegraphController: {fileID: 4145373271523466863}
   zombieModel: {fileID: 8772308359146201415}
   guardModel: {fileID: 4856279607837935437}
+  shootRange: 0
 --- !u!114 &4145373271523466863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +219,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorPivot: {fileID: 8121373539508770427}
+  renderer: {fileID: 8044248064424221598}
+  humanMat: {fileID: 2100000, guid: 893c7f65d49be2d4d812f42c0f1f0441, type: 2}
+  zombieMat: {fileID: 2100000, guid: cb4a26a8b7c4f2447bfcbe323cda575b, type: 2}
 --- !u!136 &5580267715440816598
 CapsuleCollider:
   m_ObjectHideFlags: 0

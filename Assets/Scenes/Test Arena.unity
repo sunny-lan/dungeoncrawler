@@ -9025,6 +9025,11 @@ PrefabInstance:
       propertyPath: isZombieInitial
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8044248064424221598, guid: 76085ed89b5302e49a81a9a7fff055d9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 893c7f65d49be2d4d812f42c0f1f0441, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1 &1114323995

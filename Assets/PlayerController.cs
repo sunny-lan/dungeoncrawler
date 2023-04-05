@@ -84,8 +84,11 @@ public class PlayerController : GridEntity
         {
             gameManager.DoEnemyTurn();
         }
+        else
+        {
+            gameManager.DoEnemyTelegraph();
+        }
 
-        gameManager.DoEnemyTelegraph();
     }
 
     public float biteRange = 1.5f;

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Telegraph Indicator
+  m_Name: Mild Telegraph Indicator
   m_Shader: {fileID: -6465566751694194690, guid: 2d778d35f7aa27e478a654ed026cc581,
     type: 3}
   m_ValidKeywords: []
@@ -118,14 +118,14 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _Top_Y: 0.32
+    - _Top_Y: 0.2
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 0.9056604, g: 0.19223925, b: 0.19223925, a: 0.29803923}
-    - _Bottom_Color: {r: 1, g: 0, b: 0.036886215, a: 0.5803922}
+    - _Bottom_Color: {r: 1, g: 0.86627156, b: 0.495283, a: 0.7294118}
     - _Color: {r: 0.9056604, g: 0.19223922, b: 0.19223922, a: 0.29803923}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Top_Color: {r: 1, g: 0.86116946, b: 0, a: 0}
+    - _Top_Color: {r: 1, g: 0.6723624, b: 0, a: 0}
   m_BuildTextureStacks: []

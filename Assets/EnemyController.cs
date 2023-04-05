@@ -24,6 +24,16 @@ public class EnemyController : GridEntity
             zombieModel.SetActive(isZombie);
             guardModel.SetActive(!isZombie);
         });
+
+        var dirs = new List<Vector2Int>()
+            {
+                Vector2Int.up,
+                Vector2Int.left,
+                Vector2Int.down,
+                Vector2Int.right
+            };
+
+        lastMoveDir = dirs[Random.Range(0,4)];
     }
 
     public void TelegraphTurn()
@@ -38,7 +48,7 @@ public class EnemyController : GridEntity
         }
         else
         {
-            if (!TelegraphShoot())
+            // if (!TelegraphShoot())
             {
                 // move away from zombies
                 TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
@@ -61,8 +71,8 @@ public class EnemyController : GridEntity
             }
             else if (!isZombie && entity is PlayerController)
             {
-                float bulletDmg = 50; // TODO put into function
-                entity.health -= bulletDmg;
+                //float bulletDmg = 50; // TODO put into function
+                //entity.health -= bulletDmg;
             }
         }
         else
@@ -73,8 +83,8 @@ public class EnemyController : GridEntity
             }
             else if (!isZombie && gameManager.CanEntitySee(this, gameManager.player))
             {
-                float bulletDmg = 50; // TODO put into function
-                gameManager.player.health -= bulletDmg;
+                //float bulletDmg = 50; // TODO put into function
+                //gameManager.player.health -= bulletDmg;
             }
         }
 
@@ -109,7 +119,7 @@ public class EnemyController : GridEntity
             
             if (entity && !entity.isZombie)
             {
-               telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta);   
+               telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta, isZombie);   
                return true;
             }
             else
@@ -123,6 +133,7 @@ public class EnemyController : GridEntity
 
     private bool TelegraphShoot()
     {
+        Debug.Assert(false, "Control should never reach here");
         if (gameManager.player.isZombie)
             return false;
 
@@ -134,7 +145,7 @@ public class EnemyController : GridEntity
 
         if (gameManager.CanEntitySee90Degrees(this, gameManager.player))
         {
-            telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, gameManager.player.pos - pos, shootRange);
+            telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, gameManager.player.pos - pos, isZombie, shootRange);
             return true;
         }
         return false;
@@ -166,8 +177,8 @@ public class EnemyController : GridEntity
         }
 
         // TODO cache player
-        if (!isZombie && !gameManager.player.isZombie && seesPlayer && TelegraphMoveInRelationToEntity(gameManager.player, true))
-            return true;
+        //if (!isZombie && !gameManager.player.isZombie && seesPlayer && TelegraphMoveInRelationToEntity(gameManager.player, true))
+        //   return true;
 
         if (seesTarget && TelegraphMoveInRelationToEntity(nearestTarget, moveTowardTarget))
             return true;
@@ -178,7 +189,7 @@ public class EnemyController : GridEntity
     private bool TelegraphMoveInRelationToEntity(GridEntity target, bool moveTowardTarget)
     {
         Debug.Assert(target);
-        Debug.DrawLine(raycastCenter.position, target.raycastCenter.position, Color.red, 0.5f);
+        Debug.DrawLine(raycastCenter.position, target.raycastCenter.position, moveTowardTarget? Color.green : Color.red, 0.5f);
         var dirs = new List<Vector2Int>()
             {
                 Vector2Int.up,
@@ -201,7 +212,7 @@ public class EnemyController : GridEntity
         {
             if (gameManager.IsWalkable(pos + dir))
             {
-                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir);
+                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, dir, isZombie);
                 return true;
             }
         }
@@ -239,7 +250,7 @@ public class EnemyController : GridEntity
             }
         }
 
-        telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta);
+        telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta, isZombie);
         return true;
     }
 
