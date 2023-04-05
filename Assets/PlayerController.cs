@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +16,18 @@ public class PlayerController : GridEntity
         base.Awake();
 
         playerCam = GetComponentInChildren<Camera>();
+        canvas = GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
 
         onChangeZombieStatus.AddListener(_ => UpdatePossibleActions());
-        canvas = GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
+
+        var playerDamagedIndicator = GetComponentInChildren<PulseImageColor>();
+        float oldhealth = health;
+        onChangeHealth.AddListener(health =>
+        {
+            if(health < oldhealth)
+                playerDamagedIndicator.Trigger();
+            oldhealth = health;
+        });
     }
     // Start is called before the first frame update
     protected override void Start()
