@@ -5,6 +5,7 @@ using System.Linq;
 
 public class EnemyController : GridEntity
 {
+    enum StunStatus { WAIT_NEXT_TELEGRAPH, WAIT_NEXT_TURN, NORMAL};
     Vector2Int lastMoveDir = Vector2Int.up;
     [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
     [SerializeField] EnemyTelegraphController telegraphController;
@@ -12,7 +13,7 @@ public class EnemyController : GridEntity
     [SerializeField] GameObject zombieModel;
     [SerializeField] GameObject guardModel;
 
-    bool isStunned = false;
+    StunStatus stunStatus = StunStatus.NORMAL;
 
     protected override void Awake()
     {
@@ -37,6 +38,12 @@ public class EnemyController : GridEntity
 
     public void TelegraphTurn()
     {
+        if (stunStatus == StunStatus.WAIT_NEXT_TELEGRAPH)
+            stunStatus = StunStatus.WAIT_NEXT_TURN;
+
+        if (stunStatus != StunStatus.NORMAL)
+            return;
+
         if (isZombie)
         {
             if (!TelegraphBite())
@@ -54,11 +61,16 @@ public class EnemyController : GridEntity
     public void DoTurn()
     {
         var entity = gameManager.GetEntityAt(pos + telegraphController.GetDirection());
-        if (isStunned)
+
+        if (stunStatus == StunStatus.WAIT_NEXT_TURN)
         {
-            isStunned = false;
-            telegraphController.ClearEmotion();
+            stunStatus = StunStatus.NORMAL;
+            return;
         }
+
+        if (stunStatus == StunStatus.WAIT_NEXT_TELEGRAPH)
+            return;
+
         else if (telegraphController.GetTelegraphType() == EnemyTelegraphController.TelgraphType.MOVE)
         {
             if (entity == null)
@@ -232,6 +244,6 @@ public class EnemyController : GridEntity
 
         telegraphController.ClearTelegraph();
         telegraphController.SetEmotion(EnemyTelegraphController.EmotionType.STUNNED);
-        isStunned = true;
+        stunStatus = StunStatus.WAIT_NEXT_TELEGRAPH;
     }
 }

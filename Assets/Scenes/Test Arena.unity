@@ -6532,6 +6532,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}
+      propertyPath: initialHealth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
       propertyPath: isZombieInitial
       value: 1
       objectReference: {fileID: 0}
