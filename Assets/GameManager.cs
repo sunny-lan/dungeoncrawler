@@ -200,4 +200,31 @@ public class GameManager : MonoBehaviour
     {
         walkable[pos] = _walkable;
     }
+
+    HashSet<KeyController> unfoundKeys = new();
+    HashSet<KeyController> allKeys = new();
+    public IReadOnlyCollection<KeyController> UnfoundKeys => unfoundKeys;
+    public IReadOnlyCollection<KeyController> AllKeys => allKeys;
+
+    public void RandomGenerateKeys()
+    {
+        //TODO
+    }
+
+    // Called by keys to register themselves
+    public void RegisterKey(KeyController key)
+    {
+        unfoundKeys.Add(key);
+        allKeys.Add(key);
+    }
+
+    internal void OnPlayerCollectedKey(KeyController key)
+    {
+        unfoundKeys.Remove(key);
+
+        if (unfoundKeys.Count == 0)
+        {
+            Debug.LogWarning("TODO unlock door");
+        }
+    }
 }

@@ -8,7 +8,15 @@ public class GridEntity : MonoBehaviour
     public UnityEvent<bool> onChangeZombieStatus;
     public bool isZombie => health <= 0;
 
-    public Vector2Int pos;
+    public UnityEvent<Vector2Int> onChangePos;
+    public Vector2Int pos
+    {
+        get => _pos; set
+        {
+            _pos = value;
+            onChangePos?.Invoke(_pos);
+        }
+    }
     public Transform raycastCenter;
 
     public float maxHealth = 100;
@@ -39,13 +47,12 @@ public class GridEntity : MonoBehaviour
     {
         healthbar = GetComponentInChildren<HPBar>();
         gameManager = FindObjectOfType<GameManager>();
+        gameManager.RegisterEntity(this);
     }
 
     protected virtual void Start()
     {
-        gameManager.RegisterEntity(this);
-        pos.x = Mathf.FloorToInt(transform.position.x);
-        pos.y = Mathf.FloorToInt(transform.position.z);
+        pos = new(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.z));
         transform.position = new Vector3(pos.x, 0, pos.y); // snap to grid
         health = initialHealth;
     }
@@ -81,6 +88,7 @@ public class GridEntity : MonoBehaviour
     }
 
     public float reviveMinHealth = 50;
+    private Vector2Int _pos;
 
     public virtual void ReviveFromZombie()
     {

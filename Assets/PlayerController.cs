@@ -308,6 +308,16 @@ public class PlayerController : GridEntity
         base.GetBitten(by);
         UpdateStatus();
     }
+
+    [SerializeField] TMP_Text txtKeysFound;
+
+    int keysFound = 0;
+
+    internal void OnCollectedKey(KeyController key)
+    {
+        keysFound++;
+        txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
+    }
 }
 
 public interface IPunchable
