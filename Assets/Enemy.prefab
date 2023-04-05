@@ -265,7 +265,6 @@ MonoBehaviour:
   onChangeZombieStatus:
     m_PersistentCalls:
       m_Calls: []
-  isZombieInitial: 0
   pos: {x: 0, y: 0}
   raycastCenter: {fileID: 2074524523674864474}
   maxHealth: 100
@@ -276,7 +275,6 @@ MonoBehaviour:
   biteDamage: 190
   biteSelfHeal: 70
   bittenMaxHeatlh: -10
-  bitesToHuman: 3
   reviveMinHealth: 50
   randomMoveChance: 0.25
   telegraphController: {fileID: 4145373271523466863}
@@ -340,7 +338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6432511612485471374}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.49, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
