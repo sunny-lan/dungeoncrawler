@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : GridEntity
 {
@@ -17,6 +18,7 @@ public class PlayerController : GridEntity
         playerCam = GetComponentInChildren<Camera>();
 
         onChangeZombieStatus.AddListener(_ => UpdatePossibleActions());
+        canvas = GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -91,11 +93,11 @@ public class PlayerController : GridEntity
 
     }
 
-    public float biteRange = 1.5f;
-    public float gunRange = 10f;
-    public float punchRange = 1.5f;
+    float biteRange = 1.5f;
+    float gunRange = 10f;
+    float punchRange = 1.5f;
 
-    public float zombiePunchStrength = 10, humanPunchStength = 1;
+    float zombiePunchStrength = 10, humanPunchStength = 1;
 
 
     GameObject curRaycastedObj;
@@ -202,6 +204,9 @@ public class PlayerController : GridEntity
         }
     };
 
+    [SerializeField] GameObject biteIndicator;
+    private RectTransform canvas;
+
     void UpdatePossibleActionsUI()
     {
         curRaycastedObj?.GetComponentInChildren<Outline>()?.SetEnabled(possibleActions.Count > 0);
@@ -221,6 +226,7 @@ public class PlayerController : GridEntity
         }
 
         //TODO show bite indicator
+        LayoutRebuilder.ForceRebuildLayoutImmediate(canvas);
     }
 
     bool CheckActions()
