@@ -12,7 +12,7 @@ public class EnemyController : GridEntity
     [SerializeField] GameObject zombieModel;
     [SerializeField] GameObject guardModel;
 
-    [SerializeField] int shootRange;
+    //[SerializeField] int shootRange;
 
     protected override void Awake()
     {
@@ -33,7 +33,7 @@ public class EnemyController : GridEntity
                 Vector2Int.right
             };
 
-        lastMoveDir = dirs[Random.Range(0,4)];
+        lastMoveDir = dirs[Random.Range(0, 4)];
     }
 
     public void TelegraphTurn()
@@ -48,11 +48,7 @@ public class EnemyController : GridEntity
         }
         else
         {
-            // if (!TelegraphShoot())
-            {
-                // move away from zombies
-                TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
-            }
+            TelegraphMove(targetIsZombie: true, moveTowardTarget: false);
         }
     }
 
@@ -63,28 +59,22 @@ public class EnemyController : GridEntity
         {
             if (entity == null)
             {
-                DoMove(telegraphController.GetDirection());  
+                DoMove(telegraphController.GetDirection());
             }
             else if (isZombie && !entity.isZombie)
             {
                 Bite(entity);
             }
-            else if (!isZombie && entity is PlayerController)
+            else if (TelegraphRandomMove())
             {
-                //float bulletDmg = 50; // TODO put into function
-                //entity.health -= bulletDmg;
+                DoTurn();
             }
         }
         else
-        { 
+        {
             if (entity && isZombie && !entity.isZombie)
             {
                 Bite(entity);
-            }
-            else if (!isZombie && gameManager.CanEntitySee(this, gameManager.player))
-            {
-                //float bulletDmg = 50; // TODO put into function
-                //gameManager.player.health -= bulletDmg;
             }
         }
 
@@ -116,38 +106,19 @@ public class EnemyController : GridEntity
         {
             delta = dirs[Random.Range(0, dirs.Count)];
             var entity = gameManager.GetEntityAt(pos + delta);
-            
+
             if (entity && !entity.isZombie)
             {
-               telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta, isZombie);   
-               return true;
+                telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta, isZombie);
+                telegraphController.SetEmotion(true);
+                return true;
             }
             else
             {
                 dirs.Remove(delta);
             }
         }
-
-        return false;
-    }
-
-    private bool TelegraphShoot()
-    {
-        Debug.Assert(false, "Control should never reach here");
-        if (gameManager.player.isZombie)
-            return false;
-
-        if (gameManager.player.pos.x != pos.x && gameManager.player.pos.y != pos.y)
-            return false;
-
-        if (Vector2Int.Distance(gameManager.player.pos, pos) > shootRange)
-            return false;
-
-        if (gameManager.CanEntitySee90Degrees(this, gameManager.player))
-        {
-            telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, gameManager.player.pos - pos, isZombie, shootRange);
-            return true;
-        }
+        telegraphController.ClearEmotion();
         return false;
     }
 
@@ -155,15 +126,11 @@ public class EnemyController : GridEntity
     {
         var visible = gameManager.GetAllEntitiesVisibleBy(this);
         bool seesTarget = false;
-        bool seesPlayer = false;
         GridEntity nearestTarget = null;
         float distToNearestTarget = Mathf.Infinity;
 
         foreach (var entity in visible)
         {
-            if (entity is PlayerController)
-                seesPlayer = true;
-
             if (entity.isZombie == targetIsZombie) // I see a target
             {
                 seesTarget = true;
@@ -176,20 +143,20 @@ public class EnemyController : GridEntity
             }
         }
 
-        // TODO cache player
-        //if (!isZombie && !gameManager.player.isZombie && seesPlayer && TelegraphMoveInRelationToEntity(gameManager.player, true))
-        //   return true;
-
         if (seesTarget && TelegraphMoveInRelationToEntity(nearestTarget, moveTowardTarget))
+        {
+            telegraphController.SetEmotion(moveTowardTarget);
             return true;
+        }
 
+        telegraphController.ClearEmotion();
         return TelegraphRandomMove();
     }
 
     private bool TelegraphMoveInRelationToEntity(GridEntity target, bool moveTowardTarget)
     {
         Debug.Assert(target);
-        Debug.DrawLine(raycastCenter.position, target.raycastCenter.position, moveTowardTarget? Color.green : Color.red, 0.5f);
+        Debug.DrawLine(raycastCenter.position, target.raycastCenter.position, moveTowardTarget ? Color.green : Color.red, 0.5f);
         var dirs = new List<Vector2Int>()
             {
                 Vector2Int.up,
@@ -216,7 +183,6 @@ public class EnemyController : GridEntity
                 return true;
             }
         }
-
         return false;
     }
 
@@ -241,7 +207,8 @@ public class EnemyController : GridEntity
                 delta = dirs[Random.Range(0, dirs.Count)];
                 if (gameManager.IsWalkable(pos + delta))
                 {
-                    break;
+                    telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta, isZombie);
+                    return true;
                 }
                 else
                 {
@@ -250,8 +217,7 @@ public class EnemyController : GridEntity
             }
         }
 
-        telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.MOVE, delta, isZombie);
-        return true;
+        return false;
     }
 
     public override void GetBitten(GridEntity by)

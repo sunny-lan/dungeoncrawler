@@ -2290,21 +2290,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1001 &372964849
@@ -3052,21 +3037,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
@@ -4806,21 +4776,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1 &567272854
@@ -5544,21 +5499,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1 &672657183
@@ -5960,21 +5900,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
@@ -9010,26 +8935,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8044248064424221598, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 893c7f65d49be2d4d812f42c0f1f0441, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1 &1114323995
@@ -10320,21 +10225,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
 --- !u!1 &1296974513
@@ -10998,21 +10888,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombie
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: shootRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7109449729282233171, guid: 76085ed89b5302e49a81a9a7fff055d9,
-        type: 3}
-      propertyPath: isZombieInitial
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76085ed89b5302e49a81a9a7fff055d9, type: 3}
