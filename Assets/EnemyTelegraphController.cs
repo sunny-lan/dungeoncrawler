@@ -1,17 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyTelegraphController : MonoBehaviour
 {
+    public enum EmotionType { HOSTILE, FLEE, STUNNED };
     public enum TelgraphType { MOVE, ATTACK };
     private TelgraphType type;
     private Vector2Int direction;
 
+    [Header("telegraph")]
     [SerializeField] private Transform indicatorPivot;
     [SerializeField] private new MeshRenderer renderer;
     [SerializeField] private Material humanMat;
     [SerializeField] private Material zombieMat;
+
+    [Header("emotion")]
+    [SerializeField] private Image emotionImage;
+    [SerializeField] private Sprite hostileSprite;
+    [SerializeField] private Sprite fleeSprite;
+    [SerializeField] private Sprite stunnedSprite;
 
     public void UpdateTelegraph(TelgraphType type, Vector2Int direction, bool isZombie, int length = 1)
     {
@@ -30,6 +39,31 @@ public class EnemyTelegraphController : MonoBehaviour
         indicatorPivot.gameObject.SetActive(false);
     }
 
+    public void SetEmotion(EmotionType emotion)
+    {
+        switch (emotion)
+        {
+            case EmotionType.HOSTILE:
+                emotionImage.sprite = hostileSprite;
+                break;
+            case EmotionType.FLEE:
+                emotionImage.sprite = fleeSprite;
+                break;
+            case EmotionType.STUNNED:
+                emotionImage.sprite = stunnedSprite;
+                break;
+            default:
+                break;
+        }
+        emotionImage.enabled = true;
+    }
+
+    public void ClearEmotion()
+    {
+        emotionImage.sprite = null;
+        emotionImage.enabled = false;
+    }
+
     public TelgraphType GetTelegraphType()
     {
         return type;
@@ -39,4 +73,5 @@ public class EnemyTelegraphController : MonoBehaviour
     {
         return direction;
     }
+
 }
