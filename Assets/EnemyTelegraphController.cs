@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyTelegraphController : MonoBehaviour
 {
+    public enum EmotionType { HOSTILE, FLEE, STUNNED };
     public enum TelgraphType { MOVE, ATTACK };
     private TelgraphType type;
     private Vector2Int direction;
@@ -19,6 +20,7 @@ public class EnemyTelegraphController : MonoBehaviour
     [SerializeField] private Image emotionImage;
     [SerializeField] private Sprite hostileSprite;
     [SerializeField] private Sprite fleeSprite;
+    [SerializeField] private Sprite stunnedSprite;
 
     public void UpdateTelegraph(TelgraphType type, Vector2Int direction, bool isZombie, int length = 1)
     {
@@ -37,9 +39,22 @@ public class EnemyTelegraphController : MonoBehaviour
         indicatorPivot.gameObject.SetActive(false);
     }
 
-    public void SetEmotion(bool hostile)
+    public void SetEmotion(EmotionType emotion)
     {
-        emotionImage.sprite = hostile ? hostileSprite : fleeSprite;
+        switch (emotion)
+        {
+            case EmotionType.HOSTILE:
+                emotionImage.sprite = hostileSprite;
+                break;
+            case EmotionType.FLEE:
+                emotionImage.sprite = fleeSprite;
+                break;
+            case EmotionType.STUNNED:
+                emotionImage.sprite = stunnedSprite;
+                break;
+            default:
+                break;
+        }
         emotionImage.enabled = true;
     }
 

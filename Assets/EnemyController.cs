@@ -12,7 +12,7 @@ public class EnemyController : GridEntity
     [SerializeField] GameObject zombieModel;
     [SerializeField] GameObject guardModel;
 
-    //[SerializeField] int shootRange;
+    bool isStunned = false;
 
     protected override void Awake()
     {
@@ -54,7 +54,12 @@ public class EnemyController : GridEntity
     public void DoTurn()
     {
         var entity = gameManager.GetEntityAt(pos + telegraphController.GetDirection());
-        if (telegraphController.GetTelegraphType() == EnemyTelegraphController.TelgraphType.MOVE)
+        if (isStunned)
+        {
+            isStunned = false;
+            telegraphController.ClearEmotion();
+        }
+        else if (telegraphController.GetTelegraphType() == EnemyTelegraphController.TelgraphType.MOVE)
         {
             if (entity == null)
             {
@@ -109,7 +114,7 @@ public class EnemyController : GridEntity
             if (entity && !entity.isZombie)
             {
                 telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta, isZombie);
-                telegraphController.SetEmotion(true);
+                telegraphController.SetEmotion(EnemyTelegraphController.EmotionType.HOSTILE);
                 return true;
             }
             else
@@ -144,7 +149,7 @@ public class EnemyController : GridEntity
 
         if (seesTarget && TelegraphMoveInRelationToEntity(nearestTarget, moveTowardTarget))
         {
-            telegraphController.SetEmotion(moveTowardTarget);
+            telegraphController.SetEmotion(moveTowardTarget ? EnemyTelegraphController.EmotionType.HOSTILE : EnemyTelegraphController.EmotionType.FLEE);
             return true;
         }
 
@@ -222,6 +227,9 @@ public class EnemyController : GridEntity
     public override void GetBitten(GridEntity by)
     {
         base.GetBitten(by);
-        TelegraphTurn(); // TODO Stun when zombified
+
+        telegraphController.ClearTelegraph();
+        telegraphController.SetEmotion(EnemyTelegraphController.EmotionType.STUNNED);
+        isStunned = true;
     }
 }

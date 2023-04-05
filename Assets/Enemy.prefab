@@ -301,6 +301,7 @@ MonoBehaviour:
   emotionImage: {fileID: 6890054913604507731}
   hostileSprite: {fileID: 21300000, guid: 705c4c40c072d3c44a7216550262e04b, type: 3}
   fleeSprite: {fileID: 21300000, guid: ffe5d4b144deac240bb9fc632250679b, type: 3}
+  stunnedSprite: {fileID: 21300000, guid: 45649ee3904351f48ae4fdcf502b88c6, type: 3}
 --- !u!136 &5580267715440816598
 CapsuleCollider:
   m_ObjectHideFlags: 0
