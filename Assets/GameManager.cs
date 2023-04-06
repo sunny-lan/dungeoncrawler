@@ -22,6 +22,13 @@ public class GameManager : MonoBehaviour
     Dictionary<Vector2Int, bool> walkable = new ();
     private List<GridEntity> entities;
     public PlayerController player { get; private set; }
+
+    [Header("Key spawning")]
+    [SerializeField] BoundsInt mapBounds; // ignores y
+    [SerializeField] int numKeys;
+    [SerializeField] float keySpawnMinDistanceFromPlayer;
+    [SerializeField] GameObject keyPrefab;
+
     public float walkableVisualizerHeight;
 
     public void RegisterEntity(GridEntity entity)
@@ -207,9 +214,35 @@ public class GameManager : MonoBehaviour
     public IReadOnlyCollection<KeyController> UnfoundKeys => unfoundKeys;
     public IReadOnlyCollection<KeyController> AllKeys => allKeys;
 
+    private void Start()
+    {
+        RandomGenerateKeys();
+    }
+
     public void RandomGenerateKeys()
     {
-        //TODO
+        var occupied = new HashSet<Vector2Int>();
+        for (int i = 0; i < numKeys; i++)
+        {
+            Vector2Int pos;
+            int failsafe = 100;
+            do
+            {
+                failsafe--;
+                if (failsafe == 0)
+                {
+                    Debug.LogError("Failed to spawn key! Aborting...");
+                    return;
+                }
+                pos = new Vector2Int(Random.Range(mapBounds.xMin, mapBounds.xMax + 1),
+                                     Random.Range(mapBounds.zMin, mapBounds.zMax + 1));
+            } while (!walkable.GetValueOrDefault(pos, true) ||
+                     occupied.Contains(pos) ||
+                     Vector2Int.Distance(pos, player.pos) < keySpawnMinDistanceFromPlayer);
+
+            Instantiate(keyPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+            occupied.Add(pos);
+        }
     }
 
     // Called by keys to register themselves
@@ -231,6 +264,12 @@ public class GameManager : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(mapBounds.center, mapBounds.size);
+
+        if (player)
+            Gizmos.DrawWireSphere(new Vector3(player.pos.x, 0, player.pos.y), keySpawnMinDistanceFromPlayer);
+
         if (walkable == null)
             return;
 

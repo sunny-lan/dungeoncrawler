@@ -10,7 +10,7 @@ public class SetWalkable : MonoBehaviour
     public bool walkable = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
 
