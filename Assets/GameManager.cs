@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     Dictionary<Vector2Int, bool> walkable = new ();
     private List<GridEntity> entities;
     public PlayerController player { get; private set; }
+    public float walkableVisualizerHeight;
 
     public void RegisterEntity(GridEntity entity)
     {
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
                 {
                     south = entity;
                 }
-            } 
+            }
             else
             {
                 // east or west
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour
         {
             if (entity == origin || visible.Contains(entity))
                 continue;
-            
+
             if (CanEntitySee(origin, entity))
                 visible.Add(entity);
         }
@@ -144,7 +145,7 @@ public class GameManager : MonoBehaviour
         dir.x = dir.x.Sign();
         dir.y = dir.y.Sign();
 
-        Debug.Assert(dir * (int) delta.magnitude == delta);
+        Debug.Assert(dir * (int)delta.magnitude == delta);
 
         for (int i = 1; i < delta.magnitude; i++)
         {
@@ -201,8 +202,8 @@ public class GameManager : MonoBehaviour
         walkable[pos] = _walkable;
     }
 
-    HashSet<KeyController> unfoundKeys = new();
-    HashSet<KeyController> allKeys = new();
+    HashSet<KeyController> unfoundKeys = new ();
+    HashSet<KeyController> allKeys = new ();
     public IReadOnlyCollection<KeyController> UnfoundKeys => unfoundKeys;
     public IReadOnlyCollection<KeyController> AllKeys => allKeys;
 
@@ -225,6 +226,21 @@ public class GameManager : MonoBehaviour
         if (unfoundKeys.Count == 0)
         {
             Debug.LogWarning("TODO unlock door");
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (walkable == null)
+            return;
+
+        Gizmos.color = Color.red;
+        foreach (var w in walkable)
+        {
+            if (!w.Value)
+            {
+                Gizmos.DrawCube(new Vector3(w.Key.x, walkableVisualizerHeight, w.Key.y), new Vector3(1f, 0.1f, 1f));
+            }
         }
     }
 }

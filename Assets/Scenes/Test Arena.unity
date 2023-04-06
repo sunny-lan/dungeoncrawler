@@ -8742,6 +8742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289e3cd1871c08b488ba7fd5ffe07aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  walkableVisualizerHeight: 2.28
 --- !u!1 &1072673677
 GameObject:
   m_ObjectHideFlags: 0
