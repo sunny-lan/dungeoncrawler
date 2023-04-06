@@ -81,10 +81,6 @@ public class EnemyController : GridEntity
             {
                 Bite(entity);
             }
-            else if (TelegraphRandomMove())
-            {
-                DoTurn();
-            }
         }
         else
         {
