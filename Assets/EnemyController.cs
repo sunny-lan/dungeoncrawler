@@ -2,27 +2,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor.Animations;
+
 
 public class EnemyController : GridEntity
 {
-    enum StunStatus { WAIT_NEXT_TELEGRAPH, WAIT_NEXT_TURN, NORMAL};
+    enum StunStatus { WAIT_NEXT_TELEGRAPH, WAIT_NEXT_TURN, NORMAL };
     Vector2Int lastMoveDir = Vector2Int.up;
-    [SerializeField] [Range(0, 1)] float randomMoveChance = 0.5f;
+    [SerializeField][Range(0, 1)] float randomMoveChance = 0.5f;
     [SerializeField] EnemyTelegraphController telegraphController;
+
+
+    [Header("Models and animations")]
 
     [SerializeField] GameObject zombieModel;
     [SerializeField] GameObject guardModel;
 
+    Animator zombieAnimator;
+    Animator guardAnimator;
+
+    [SerializeField] Renderer zombieHead;
+    [SerializeField] Renderer guardHead;
+    [SerializeField] AttachToHead attachToHead;
+
+    [System.Serializable]
+    struct Animations
+    {
+        public AnimatorController idle, move;
+    }
+
+    [SerializeField] Animations zombieAnimations;
+    [SerializeField] Animations guardAnimations;
+
     StunStatus stunStatus = StunStatus.NORMAL;
+
+    private EmotionType _emotion;
+    public EmotionType emotion
+    {
+        get => _emotion; private set
+        {
+            _emotion = value; 
+            telegraphController.SetEmotion(emotion);
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
 
+        zombieAnimator = zombieModel.GetComponent<Animator>();
+        guardAnimator = guardModel.GetComponent<Animator>();
+
         onChangeZombieStatus.AddListener(isZombie =>
         {
             zombieModel.SetActive(isZombie);
             guardModel.SetActive(!isZombie);
+
+            attachToHead.head = isZombie ? zombieHead : guardHead;
         });
 
         var dirs = new List<Vector2Int>()
@@ -122,7 +158,7 @@ public class EnemyController : GridEntity
             if (entity && !entity.isZombie)
             {
                 telegraphController.UpdateTelegraph(EnemyTelegraphController.TelgraphType.ATTACK, delta, isZombie);
-                telegraphController.SetEmotion(EnemyTelegraphController.EmotionType.HOSTILE);
+                emotion = EmotionType.HOSTILE;
                 return true;
             }
             else
@@ -130,7 +166,7 @@ public class EnemyController : GridEntity
                 dirs.Remove(delta);
             }
         }
-        telegraphController.ClearEmotion();
+        emotion = EmotionType.IDLE;
         return false;
     }
 
@@ -157,11 +193,11 @@ public class EnemyController : GridEntity
 
         if (seesTarget && TelegraphMoveInRelationToEntity(nearestTarget, moveTowardTarget))
         {
-            telegraphController.SetEmotion(moveTowardTarget ? EnemyTelegraphController.EmotionType.HOSTILE : EnemyTelegraphController.EmotionType.FLEE);
+            emotion = moveTowardTarget ? EmotionType.HOSTILE : EmotionType.FLEE;
             return true;
         }
 
-        telegraphController.ClearEmotion();
+        emotion = EmotionType.IDLE;
         return TelegraphRandomMove();
     }
 
@@ -239,7 +275,7 @@ public class EnemyController : GridEntity
         base.GetBitten(by);
 
         telegraphController.ClearTelegraph();
-        telegraphController.SetEmotion(EnemyTelegraphController.EmotionType.STUNNED);
+        emotion = EmotionType.STUNNED;
         stunStatus = StunStatus.WAIT_NEXT_TELEGRAPH;
     }
 }

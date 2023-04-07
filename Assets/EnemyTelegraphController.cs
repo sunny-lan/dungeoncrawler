@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum EmotionType { HOSTILE, FLEE, STUNNED, IDLE };
+
 public class EnemyTelegraphController : MonoBehaviour
 {
-    public enum EmotionType { HOSTILE, FLEE, STUNNED };
     public enum TelgraphType { MOVE, ATTACK };
     private TelgraphType type;
     private Vector2Int direction;
@@ -41,6 +42,12 @@ public class EnemyTelegraphController : MonoBehaviour
 
     public void SetEmotion(EmotionType emotion)
     {
+        if (emotion == EmotionType.IDLE)
+        {
+            ClearEmotion();
+            return;
+        }
+
         switch (emotion)
         {
             case EmotionType.HOSTILE:
