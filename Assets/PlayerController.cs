@@ -26,10 +26,12 @@ public class PlayerController : GridEntity
         float oldhealth = health;
         onChangeHealth.AddListener(health =>
         {
+            UpdateStatus();
+
             if (health < oldhealth)
                 playerDamagedIndicator.Trigger((oldhealth - health) / 20);
 
-            if (health < -maxHealth)
+            if (health <= -maxHealth)
             {
                 gameManager.HandlePlayerWinLose(false);
             }
@@ -37,6 +39,14 @@ public class PlayerController : GridEntity
             oldhealth = health;
         });
     }
+
+    public void DisableControls()
+    {
+        playerCam.GetComponent<CameraLook>().enabled = false;
+        canvas.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -295,18 +305,6 @@ public class PlayerController : GridEntity
             statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
         else
             statusText.text = $"You are a human. Find {gameManager.AllKeys.Count - keysFound} remaining keys to unlock exit";
-    }
-
-    public override void Bite(GridEntity victim)
-    {
-        base.Bite(victim);
-        UpdateStatus();
-    }
-
-    public override void GetBitten(GridEntity by)
-    {
-        base.GetBitten(by);
-        UpdateStatus();
     }
 
     [SerializeField] TMP_Text txtKeysFound;
