@@ -11,6 +11,8 @@ public class PlayerController : GridEntity
     [SerializeField] TMP_Text statusText;
     [SerializeField] ChoiceList actionsList;
 
+    public float hpDrainPerTurn = 0.5f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -37,7 +39,7 @@ public class PlayerController : GridEntity
         UpdateStatus();
     }
 
-    int moveCnt = 0;
+    public int moveCnt { get; private set; } = 0;
 
     Vector2Int[] dirs =
     {
@@ -72,17 +74,17 @@ public class PlayerController : GridEntity
             pos = newPosition;
 
             // Determine height by raycasting down
-            float y = transform.position.y;
-            if (Physics.Raycast(raycastCenter.position, Vector3.down, out var hitInfo, 2, LayerMask.GetMask("Floor")))
-            {
-                y = hitInfo.point.y;
-            }
-            else
-            {
-                Debug.Assert(false, "Raycast to find floor failed");
-            }
+            //float y = transform.position.y;
+            //if (Physics.Raycast(raycastCenter.position, Vector3.down, out var hitInfo, 2, LayerMask.GetMask("Floor")))
+            //{
+            //    y = hitInfo.point.y;
+            //}
+            //else
+            //{
+            //    Debug.Assert(false, "Raycast to find floor failed");
+            //}
 
-            transform.position = new(pos.x, y, pos.y);
+            transform.position = new(pos.x, 0, pos.y);
             OnDidMove();
             return true;
         }
@@ -91,6 +93,7 @@ public class PlayerController : GridEntity
 
     void OnDidMove()
     {
+        health -= hpDrainPerTurn;
         moveCnt++;
         if (moveCnt % 2 == 0)
         {
@@ -106,7 +109,6 @@ public class PlayerController : GridEntity
     //public float biteRange = 1.5f;
     //public float gunRange = 10f;
     float punchRange = 1.5f;
-
     float zombiePunchStrength = 10, humanPunchStength = 1;
 
 

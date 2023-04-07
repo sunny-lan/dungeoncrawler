@@ -5,21 +5,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogError("Singleton Violation");
-            Destroy(this);
-        }
-    }
-
     Dictionary<Vector2Int, bool> walkable = new ();
     private List<GridEntity> entities;
     public PlayerController player { get; private set; }

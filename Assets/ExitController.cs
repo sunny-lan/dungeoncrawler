@@ -15,11 +15,15 @@ public class ExitController : MonoBehaviour
     private GameManager gameManager;
     bool locked = true;
 
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
     private void Start()
     {
         renderer.material = closedMat;
         text.color = closedColor;
-        gameManager = GameManager.Instance;
         gameManager.player.onChangePos.AddListener(OnPlayerChangePos);
     }
 
