@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -179,16 +180,24 @@ public class GameManager : MonoBehaviour
         var toRaycastCenter = to.raycastCenter.position;
         var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 100);
 
-        System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
+        var hitsSorted = hits.OrderBy(x => x.distance).ToList();
 
-        foreach (var hit in hits)
+        foreach (var hit in hitsSorted)
         {
             var hitEntity = hit.transform.GetComponent<GridEntity>();
 
-            if (hitEntity != from && hitEntity != to)
+            if (hitEntity == to)
+            {
+                return true;
+            }
+
+            if (hitEntity == null || hitEntity != from)
+            {
                 return false;
+            }
         }
-        return true;
+
+        return false;
     }
 
     public bool IsWalkable(Vector2Int pos)
