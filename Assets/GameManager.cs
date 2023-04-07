@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,13 +22,34 @@ public class GameManager : MonoBehaviour
 
     public float walkableVisualizerHeight;
 
+    private WinLoseScreenController winLoseScreenController;
+    private void Awake()
+    {
+        winLoseScreenController = FindObjectOfType<WinLoseScreenController>();
+    }
+
+    public void HandlePlayerWinLose(bool win)
+    {
+        winLoseScreenController.Show(win);
+        player.enabled = false;
+    }
+
     public void RegisterEntity(GridEntity entity)
     {
         if (entities == null)
             entities = new List<GridEntity>();
 
         if (entity is PlayerController)
+        {
             player = entity as PlayerController;
+            player.onChangeHealth.AddListener(health =>
+            {
+                if (health < -player.maxHealth)
+                {
+                    HandlePlayerWinLose(false);
+                }
+            });
+        }
 
         entities.Add(entity);
     }
@@ -221,7 +243,7 @@ public class GameManager : MonoBehaviour
     public void RandomGenerateKeys()
     {
         var occupied = new HashSet<Vector2Int>();
-        for (int i = 0; i < numKeys; i++)
+        for (int i = 0; i < numKeys; i++)   
         {
             Vector2Int pos;
             int failsafe = 100;

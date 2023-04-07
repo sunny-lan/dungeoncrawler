@@ -27,7 +27,7 @@ public class PlayerController : GridEntity
         onChangeHealth.AddListener(health =>
         {
             if (health < oldhealth)
-                playerDamagedIndicator.Trigger();
+                playerDamagedIndicator.Trigger((oldhealth - health) / 20);
             oldhealth = health;
         });
     }

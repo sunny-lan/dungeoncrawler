@@ -46,6 +46,7 @@ public class ExitController : MonoBehaviour
         if (myPos == playerPos && !locked)
         {
             Debug.Log("LEVEL COMPLETE");
+            gameManager.HandlePlayerWinLose(true);
         }
     }
 }
