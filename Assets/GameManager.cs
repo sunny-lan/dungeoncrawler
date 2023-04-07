@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -184,22 +185,25 @@ public class GameManager : MonoBehaviour
     {
         var fromRaycastCenter = from.raycastCenter.position;
         var toRaycastCenter = to.raycastCenter.position;
-        var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 1000);
+        var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 100);
 
-        System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
+        var hitsSorted = hits.OrderBy(x => x.distance).ToList();
 
-        foreach (var hit in hits)
+        foreach (var hit in hitsSorted)
         {
             var hitEntity = hit.transform.GetComponent<GridEntity>();
 
-            if (hitEntity == from)
-                continue;
-
-            if (hitEntity != null)
+            if (hitEntity == to)
+            {
                 return true;
+            }
 
-            return false; // either hit a wall or another entity.
+            if (hitEntity == null || hitEntity != from)
+            {
+                return false;
+            }
         }
+
         return false;
     }
 

@@ -991,7 +991,7 @@ PrefabInstance:
     - target: {fileID: 5892931663940179482, guid: 76085ed89b5302e49a81a9a7fff055d9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5892931663940179482, guid: 76085ed89b5302e49a81a9a7fff055d9,
         type: 3}
@@ -1001,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 5892931663940179482, guid: 76085ed89b5302e49a81a9a7fff055d9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5892931663940179482, guid: 76085ed89b5302e49a81a9a7fff055d9,
         type: 3}
@@ -1868,6 +1868,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2028895297629782612, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028895297629782612, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3503177182131026561, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}
       propertyPath: m_Name
@@ -2540,10 +2550,12 @@ MonoBehaviour:
     m_Size: {x: 16, y: 0, z: 30}
   - m_Position: {x: -3, y: 0, z: -1}
     m_Size: {x: 14, y: 0, z: 20}
+  - m_Position: {x: -31, y: 2, z: -1}
+    m_Size: {x: 42, y: 0, z: 2}
   numKeys: 5
   numEnemies: 50
   keySpawnMinDistanceFromPlayer: 20
-  enemySpawnMinDistanceFromPlayer: 5
+  enemySpawnMinDistanceFromPlayer: 3
   keyPrefab: {fileID: 2749423228396809836, guid: cdf13cf9e3dd7744997e284bb4260bcb,
     type: 3}
   enemyPrefab: {fileID: 5892931663940179486, guid: 76085ed89b5302e49a81a9a7fff055d9,
