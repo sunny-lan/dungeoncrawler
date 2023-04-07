@@ -304,7 +304,13 @@ public class PlayerController : GridEntity
         if (isZombie)
             statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
         else
-            statusText.text = $"You are a human. Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit";    }
+        {
+            if (gameManager.UnfoundKeys.Count > 0)
+                statusText.text = $"You are a human. Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit";
+            else
+                statusText.text = $"You are a human. Find the exit and escape.";
+        }
+    }
 
     [SerializeField] TMP_Text txtKeysFound;
 
