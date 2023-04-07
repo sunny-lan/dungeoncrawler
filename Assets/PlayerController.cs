@@ -24,7 +24,7 @@ public class PlayerController : GridEntity
         float oldhealth = health;
         onChangeHealth.AddListener(health =>
         {
-            if(health < oldhealth)
+            if (health < oldhealth)
                 playerDamagedIndicator.Trigger();
             oldhealth = health;
         });
@@ -147,7 +147,13 @@ public class PlayerController : GridEntity
                 {
                     if (!gridEntity.isZombie && gridEntity.pos.Manhattan(pos) <= 1)
                     {
-                        possibleActions.Add(new BiteAction(gridEntity, this));
+                        possibleActions.Add(new BiteAction(gridEntity, this)
+                        {
+                            keybind = new MouseTrigger()
+                            {
+                                mouseBtn = 0
+                            }
+                        });
                     }
                 }
                 else
@@ -177,42 +183,28 @@ public class PlayerController : GridEntity
                             punchable.GetPunched(this,
                                 isZombie ? zombiePunchStrength : humanPunchStength,
                                 curRaycastInfo.point - playerCam.transform.position);
+                        },
+                        keybind = new KeyTrigger()
+                        {
+                            keyCode = KeyCode.P,
                         }
                     });
             }
         }
 
+        possibleActions.Add(new PlayerAction()
+        {
+            name = "Skip Turn",
+            action = () => { },
+            keybind = new MouseTrigger()
+            {
+                mouseBtn = 2,
+            }
+        });
+
         UpdatePossibleActionsUI();
     }
 
-    public List<InputTrigger> inputTriggers = new()
-    {
-        new()
-        {
-            name = "1",
-            keyCode = KeyCode.Alpha1,
-        },
-        new()
-        {
-            name = "2",
-            keyCode = KeyCode.Alpha2,
-        },
-        new()
-        {
-            name = "3",
-            keyCode = KeyCode.Alpha3,
-        },
-        new()
-        {
-            name = "4",
-            keyCode = KeyCode.Alpha4,
-        },
-        new()
-        {
-            name = "5",
-            keyCode = KeyCode.Alpha5,
-        }
-    };
 
     [SerializeField] GameObject biteIndicator;
     private RectTransform canvas;
@@ -223,19 +215,19 @@ public class PlayerController : GridEntity
 
         actionsList.SetItems(possibleActions.Select((action, idx) =>
         {
-            return (inputTriggers[idx].name, action.name.ToString());
+            return (possibleActions[idx].keybind.name, action.name.ToString());
         }));
 
         Vector2Int? bitePos = null;
         foreach (var action in possibleActions)
         {
-            if(action is BiteAction biteAction)
+            if (action is BiteAction biteAction)
             {
                 bitePos = biteAction.victim.pos;
             }
         }
 
-        if(bitePos is Vector2Int bite)
+        if (bitePos is Vector2Int bite)
         {
             biteIndicator.SetActive(true);
             biteIndicator.transform.position = new(bite.x, 0, bite.y);
@@ -253,7 +245,7 @@ public class PlayerController : GridEntity
     {
         for (int i = 0; i < possibleActions.Count; i++)
         {
-            if (inputTriggers[i].isDown())
+            if (possibleActions[i].keybind.isDown() == true)
             {
                 possibleActions[i].action();
                 OnDidMove();
@@ -294,7 +286,7 @@ public class PlayerController : GridEntity
         if (isZombie)
             statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
         else
-            statusText.text = $"You are a human.";
+            statusText.text = $"You are a human. Find {gameManager.AllKeys.Count - keysFound} remaining keys to unlock exit";
     }
 
     public override void Bite(GridEntity victim)
@@ -316,7 +308,8 @@ public class PlayerController : GridEntity
     internal void OnCollectedKey(KeyController key)
     {
         keysFound++;
-        txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
+        UpdateStatus();
+        //txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
     }
 }
 
@@ -330,6 +323,8 @@ public class PlayerAction
 
     public string name;
     public Action action;
+
+    public InputTrigger keybind;
 }
 
 public class BiteAction : PlayerAction
@@ -344,13 +339,41 @@ public class BiteAction : PlayerAction
     }
 }
 
-public struct InputTrigger
+public abstract class InputTrigger
 {
-    public string name;
+    public abstract string name { get; }
+
+    public abstract bool isDown();
+}
+
+public class KeyTrigger : InputTrigger
+{
+
     public KeyCode keyCode;
 
-    public bool isDown()
+    public override string name => keyCode.ToString();
+
+    public override bool isDown()
     {
         return Input.GetKeyDown(keyCode);
+    }
+
+}
+
+public class MouseTrigger : InputTrigger
+{
+    public int mouseBtn;
+
+    public override string name => mouseBtn switch
+    {
+        0 => "LMB",
+        1 => "MMB",
+        2 => "RMB",
+        _ => throw new NotImplementedException(),
+    };
+
+    public override bool isDown()
+    {
+        return Input.GetMouseButtonDown(mouseBtn);
     }
 }
