@@ -41,9 +41,11 @@ public class EnemyController : GridEntity
     {
         get => _emotion; private set
         {
+            var oldVal = _emotion;
             _emotion = value;
             telegraphController.SetEmotion(emotion);
-            UpdatePose();
+            if (oldVal != value)
+                UpdatePose();
         }
     }
 
@@ -174,7 +176,7 @@ public class EnemyController : GridEntity
         lastMoveDir = delta;
 
         // Guard walk animations speed up a bit between steps
-        if(!isZombie)
+        if (!isZombie)
             curAnimator.GetComponent<AnimationSpeedController>().Play();
     }
 
