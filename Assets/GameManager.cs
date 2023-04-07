@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
     {
         var fromRaycastCenter = from.raycastCenter.position;
         var toRaycastCenter = to.raycastCenter.position;
-        var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 1000);
+        var hits = Physics.RaycastAll(fromRaycastCenter, toRaycastCenter - fromRaycastCenter, 100);
 
         System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
@@ -185,15 +185,10 @@ public class GameManager : MonoBehaviour
         {
             var hitEntity = hit.transform.GetComponent<GridEntity>();
 
-            if (hitEntity == from)
-                continue;
-
-            if (hitEntity != null)
-                return true;
-
-            return false; // either hit a wall or another entity.
+            if (hitEntity != from && hitEntity != to)
+                return false;
         }
-        return false;
+        return true;
     }
 
     public bool IsWalkable(Vector2Int pos)
