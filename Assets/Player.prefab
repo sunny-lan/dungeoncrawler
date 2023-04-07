@@ -947,6 +947,11 @@ PrefabInstance:
       propertyPath: flip
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2257243515353540509, guid: 6bb5c48767407074f99192a2d8694f23,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9129082676210112395, guid: 6bb5c48767407074f99192a2d8694f23,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1101,6 +1106,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ActionsList
+      objectReference: {fileID: 0}
+    - target: {fileID: 3624785310013135940, guid: 93fef5131d7ebae45ac4d9731516f225,
+        type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5403289291796942806, guid: 93fef5131d7ebae45ac4d9731516f225,
         type: 3}

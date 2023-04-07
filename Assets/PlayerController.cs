@@ -286,7 +286,7 @@ public class PlayerController : GridEntity
         if (isZombie)
             statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
         else
-            statusText.text = $"You are a human.";
+            statusText.text = $"You are a human. Find {gameManager.AllKeys.Count - keysFound} remaining keys to unlock exit";
     }
 
     public override void Bite(GridEntity victim)
@@ -308,7 +308,8 @@ public class PlayerController : GridEntity
     internal void OnCollectedKey(KeyController key)
     {
         keysFound++;
-        txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
+        UpdateStatus();
+        //txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
     }
 }
 

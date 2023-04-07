@@ -32,12 +32,19 @@ public class KeyController : MonoBehaviour
             false => inactiveColor,
             true => activeColor,
         };
+
+        CheckPlayerGotKey();
     }
 
-    private void OnPlayerChangePos(Vector2Int keyPos)
+    private void OnPlayerChangePos(Vector2Int _)
+    {
+        CheckPlayerGotKey();
+    }
+
+    private void CheckPlayerGotKey()
     {
         Vector2Int myPos = new(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.z));
-        if (myPos == keyPos && (collectibleInZombieMode || !gameManager.player.isZombie))
+        if (myPos == gameManager.player.pos && (collectibleInZombieMode || !gameManager.player.isZombie))
         {
             gameManager.OnPlayerCollectedKey(this);
             gameManager.player.OnCollectedKey(this);
