@@ -14560,6 +14560,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectibleInZombieMode: 0
+  keyRenderer: {fileID: 8885241705586180554}
+  activeColor: {r: 0.98039216, g: 0.90588236, b: 0.03137255, a: 0}
+  inactiveColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.58431375}
 --- !u!1001 &7368962414705392269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14663,6 +14666,12 @@ PrefabInstance:
 --- !u!4 &6136497080609769221 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3705028537381535112, guid: 78df1db2fbc8ec64f949fac0c05bf693,
+    type: 3}
+  m_PrefabInstance: {fileID: 7368962414705392269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8885241705586180554 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2093443782267337543, guid: 78df1db2fbc8ec64f949fac0c05bf693,
     type: 3}
   m_PrefabInstance: {fileID: 7368962414705392269}
   m_PrefabAsset: {fileID: 0}
