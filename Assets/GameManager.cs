@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour
     private List<GridEntity> entities;
     public PlayerController player { get; private set; }
 
-    [Header("Key spawning")]
-    [SerializeField] BoundsInt mapBounds; // ignores y
+    [Header("spawning")]
+    [SerializeField] BoundsInt[] mapBounds; // ignores y
     [SerializeField] int numKeys;
+    [SerializeField] int numEnemies;
     [SerializeField] float keySpawnMinDistanceFromPlayer;
+    [SerializeField] float enemySpawnMinDistanceFromPlayer;
     [SerializeField] GameObject keyPrefab;
+    [SerializeField] GameObject enemyPrefab;
     [SerializeField] ExitController exitController;
 
     public float walkableVisualizerHeight;
@@ -203,6 +206,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         RandomGenerateKeys();
+        RandomGenerateEnemies();
     }
 
     public void RandomGenerateKeys()
@@ -220,13 +224,43 @@ public class GameManager : MonoBehaviour
                     Debug.LogError("Failed to spawn key! Aborting...");
                     return;
                 }
-                pos = new Vector2Int(Random.Range(mapBounds.xMin, mapBounds.xMax + 1),
-                                     Random.Range(mapBounds.zMin, mapBounds.zMax + 1));
+                var bound = mapBounds[Random.Range(0, mapBounds.Length)];
+                pos = new Vector2Int(Random.Range(bound.xMin, bound.xMax + 1),
+                                     Random.Range(bound.zMin, bound.zMax + 1));
             } while (!walkable.GetValueOrDefault(pos, true) ||
                      occupied.Contains(pos) ||
                      Vector2Int.Distance(pos, player.pos) < keySpawnMinDistanceFromPlayer);
 
             Instantiate(keyPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+            occupied.Add(pos);
+        }
+    }
+
+    public void RandomGenerateEnemies()
+    {
+        // can't realy on enemy registering themselves because after I instantiate them I need to wait a frame for Awake() to trigger.
+        // I'm too lazy to fix it so I'm just going to keep track of my own occupied hashset :p
+        var occupied = new HashSet<Vector2Int>();
+        for (int i = 0; i < numEnemies; i++)
+        {
+            Vector2Int pos;
+            int failsafe = 100;
+            do
+            {
+                failsafe--;
+                if (failsafe == 0)
+                {
+                    Debug.LogError("Failed to spawn enemy! Aborting...");
+                    return;
+                }
+                var bound = mapBounds[Random.Range(0, mapBounds.Length)];
+                pos = new Vector2Int(Random.Range(bound.xMin, bound.xMax + 1),
+                                     Random.Range(bound.zMin, bound.zMax + 1));
+            } while (!walkable.GetValueOrDefault(pos, true) ||
+                     occupied.Contains(pos) ||
+                     Vector2Int.Distance(pos, player.pos) < enemySpawnMinDistanceFromPlayer);
+
+            Instantiate(enemyPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
             occupied.Add(pos);
         }
     }
@@ -253,10 +287,16 @@ public class GameManager : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(mapBounds.center, mapBounds.size);
+        foreach (var bound in mapBounds)
+        {
+            Gizmos.DrawWireCube(bound.center, bound.size);
+        }
 
         if (player)
+        {
             Gizmos.DrawWireSphere(new Vector3(player.pos.x, 0, player.pos.y), keySpawnMinDistanceFromPlayer);
+            Gizmos.DrawWireSphere(new Vector3(player.pos.x, 0, player.pos.y), enemySpawnMinDistanceFromPlayer);
+        }
 
         if (walkable == null)
             return;
