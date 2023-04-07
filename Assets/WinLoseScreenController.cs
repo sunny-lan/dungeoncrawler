@@ -8,25 +8,8 @@ using UnityEngine.UI;
 public class WinLoseScreenController : MonoBehaviour
 {
     [SerializeField] FadeInOut fadeSelf;
-    [SerializeField] FadeInOut blackOut;
     [SerializeField] TMP_Text winLoseText;
     [SerializeField] TMP_Text turnCount;
-
-    public void OnRestart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void OnLevelSelect()
-    {
-        IEnumerator tmp()
-        {
-            yield return blackOut.FadeIn();
-
-            SceneManager.LoadScene("Level Select");
-        }
-        StartCoroutine(tmp());
-    }
 
     GameManager gm;
 
