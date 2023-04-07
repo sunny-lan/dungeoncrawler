@@ -209,6 +209,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (mapBounds.Length == 0)
+        {
+            Debug.LogError("mapBounds is empty. Add bounding boxes for the possible spawn zones of the enemies/keys. Each bounding box has the same probability of being chosen regardless of size. y is ignored.");
+            return;
+        }
         RandomGenerateKeys();
         RandomGenerateEnemies();
     }
