@@ -135,7 +135,7 @@ MonoBehaviour:
   positiveAnimated: {fileID: 1722833038428151228}
   negative: {fileID: 1816262225608998147}
   positive: {fileID: 4554293139031977832}
-  lerpSpeed: 3
+  lerpSpeed: 5
   minWidth: 0
   flip: 0
 --- !u!1 &1264168516318997631
