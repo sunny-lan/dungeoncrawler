@@ -74,7 +74,7 @@ public class EnemyController : GridEntity
             // Walking and running animations for guard are paused slowed down
             // because they look weird
             // Zombie walking animation looks okay, keep full animation speed
-            curAnimator.speed = isZombie ? 1 : 0.01f;
+            curAnimator.speed = isZombie ? 1 : 0.02f;
         }
     }
 

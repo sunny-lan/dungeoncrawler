@@ -586,6 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeInTime: 0.5
   initiallyFadedOut: 1
+  fadeInOnStart: 0
 --- !u!1 &8541644125710266534
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeInTime: 0.5
   initiallyFadedOut: 1
+  fadeInOnStart: 0
 --- !u!1001 &5541269737040287104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -694,11 +696,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6086630421500078035}
     m_Modifications:
-    - target: {fileID: -3616943172695203174, guid: a56cba4a3c8c9584189ab32e0ab06835,
-        type: 3}
-      propertyPath: blackOut
-      value: 
-      objectReference: {fileID: 39472781365140066}
     - target: {fileID: 1612711047522406069, guid: a56cba4a3c8c9584189ab32e0ab06835,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -724,16 +721,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectRestartButtons
       objectReference: {fileID: 0}
-    - target: {fileID: 4376336963572241873, guid: a56cba4a3c8c9584189ab32e0ab06835,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5308124051370984817}
-    - target: {fileID: 5256671377651136289, guid: a56cba4a3c8c9584189ab32e0ab06835,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5308124051370984817}
     - target: {fileID: 5359543786272458431, guid: a56cba4a3c8c9584189ab32e0ab06835,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -837,7 +824,7 @@ PrefabInstance:
     - target: {fileID: 8557633924223040615, guid: a56cba4a3c8c9584189ab32e0ab06835,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8557633924223040615, guid: a56cba4a3c8c9584189ab32e0ab06835,
         type: 3}
