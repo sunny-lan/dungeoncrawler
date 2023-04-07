@@ -28,8 +28,10 @@ public class GameManager : MonoBehaviour
         winLoseScreenController = FindObjectOfType<WinLoseScreenController>();
     }
 
+    public bool? playerWinState { get; private set; }
     public void HandlePlayerWinLose(bool win)
     {
+        playerWinState = win;
         player.DisableControls();
         player.enabled = false;
         winLoseScreenController.Show(win);
@@ -51,6 +53,8 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Do Enemy Telegraph")]
     public void DoEnemyTelegraph()
     {
+        if (playerWinState != null) return;
+
         foreach (var entity in entities)
         {
             if (entity is EnemyController)
@@ -61,6 +65,8 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Do Enemy Turn")]
     public void DoEnemyTurn()
     {
+        if (playerWinState != null) return;
+
         foreach (var entity in entities)
         {
             if (entity is EnemyController)

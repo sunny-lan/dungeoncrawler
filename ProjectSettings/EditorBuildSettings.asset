@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sunny Test Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Salmon Level.unity
+    guid: f51afa2576b5a5a4eaaf6eb6b776376c
+  - enabled: 1
+    path: Assets/Scenes/Level Select.unity
+    guid: 9ab84fc156fdf3b42bc8a94da12fe480
   m_configObjects: {}

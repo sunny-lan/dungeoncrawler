@@ -101,14 +101,16 @@ public class PlayerController : GridEntity
             //}
 
             transform.position = new(pos.x, 0, pos.y);
-            OnDidMove();
+            OnDidTurn();
             return true;
         }
         return false;
     }
 
-    void OnDidMove()
+    void OnDidTurn()
     {
+        if (gameManager.playerWinState != null) return;
+
         health -= hpDrainPerTurn;
         moveCnt++;
         if (moveCnt % 2 == 0)
@@ -266,7 +268,7 @@ public class PlayerController : GridEntity
             if (possibleActions[i].keybind.isDown() == true)
             {
                 possibleActions[i].action();
-                OnDidMove();
+                OnDidTurn();
                 return true;
             }
         }
