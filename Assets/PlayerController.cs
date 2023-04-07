@@ -28,6 +28,12 @@ public class PlayerController : GridEntity
         {
             if (health < oldhealth)
                 playerDamagedIndicator.Trigger((oldhealth - health) / 20);
+
+            if (health < -maxHealth)
+            {
+                gameManager.HandlePlayerWinLose(false);
+            }
+
             oldhealth = health;
         });
     }
@@ -200,7 +206,7 @@ public class PlayerController : GridEntity
             action = () => { },
             keybind = new MouseTrigger()
             {
-                mouseBtn = 2,
+                mouseBtn = 1,
             }
         });
 
@@ -369,8 +375,8 @@ public class MouseTrigger : InputTrigger
     public override string name => mouseBtn switch
     {
         0 => "LMB",
-        1 => "MMB",
-        2 => "RMB",
+        1 => "RMB",
+        2 => "MMB",
         _ => throw new NotImplementedException(),
     };
 

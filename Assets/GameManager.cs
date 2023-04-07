@@ -42,13 +42,6 @@ public class GameManager : MonoBehaviour
         if (entity is PlayerController)
         {
             player = entity as PlayerController;
-            player.onChangeHealth.AddListener(health =>
-            {
-                if (health < -player.maxHealth)
-                {
-                    HandlePlayerWinLose(false);
-                }
-            });
         }
 
         entities.Add(entity);
