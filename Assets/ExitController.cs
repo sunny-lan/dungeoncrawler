@@ -24,7 +24,8 @@ public class ExitController : MonoBehaviour
     {
         renderer.material = closedMat;
         text.color = closedColor;
-        gameManager.player.onChangePos.AddListener(OnPlayerChangePos);
+        gameManager.player.onChangePos.AddListener(_=>CheckPlayerWin());
+        gameManager.player.onChangeZombieStatus.AddListener(_ => CheckPlayerWin());
     }
 
     public void UpdateKeyCount(int collected, int total)
@@ -40,10 +41,11 @@ public class ExitController : MonoBehaviour
         text.color = openColor;
     }
 
-    private void OnPlayerChangePos(Vector2Int playerPos)
+    private void CheckPlayerWin()
     {
+        var playerPos = gameManager.player.pos;
         var myPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.z));
-        if (myPos == playerPos && !locked)
+        if (myPos == playerPos && !locked && !gameManager.player.isZombie)
         {
             Debug.Log("LEVEL COMPLETE");
             gameManager.HandlePlayerWinLose(true);

@@ -6,6 +6,8 @@ public class FacePlayer : MonoBehaviour
 {
     public Transform player;
 
+    public bool fixYRotation = true;
+
     void Awake()
     {
         if (player == null)
@@ -15,6 +17,11 @@ public class FacePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(player.position);
+        Vector3 lookpos = player.position;
+
+        if (fixYRotation)
+            lookpos.y = transform.position.y;
+
+        transform.LookAt(lookpos);
     }
 }
