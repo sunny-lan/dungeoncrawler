@@ -28,7 +28,7 @@ public class EnemyController : GridEntity
     [System.Serializable]
     struct Animations
     {
-        public AnimatorController idle, move;
+        public AnimatorController hostile, flee, stunned, idle;
     }
 
     [SerializeField] Animations zombieAnimations;
@@ -41,9 +41,24 @@ public class EnemyController : GridEntity
     {
         get => _emotion; private set
         {
-            _emotion = value; 
+            _emotion = value;
             telegraphController.SetEmotion(emotion);
+            UpdatePose();
         }
+    }
+
+    private void UpdatePose()
+    {
+        Animator curAnimator = isZombie ? zombieAnimator : guardAnimator;
+        Animations curAnimations = isZombie ? zombieAnimations : guardAnimations;
+        curAnimator.runtimeAnimatorController = emotion switch
+        {
+            EmotionType.HOSTILE => curAnimations.hostile,
+            EmotionType.FLEE => curAnimations.flee,
+            EmotionType.STUNNED => curAnimations.stunned,
+            EmotionType.IDLE => curAnimations.idle,
+            _ => throw new System.NotImplementedException(),
+        };
     }
 
     protected override void Awake()

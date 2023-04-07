@@ -331,6 +331,16 @@ MonoBehaviour:
   zombieHead: {fileID: 1373705838578461240}
   guardHead: {fileID: 4856279607851600853}
   attachToHead: {fileID: 2470448073896365039}
+  zombieAnimations:
+    hostile: {fileID: 9100000, guid: 2ef8e6599b7f9934e8ff0d64c5325a1f, type: 2}
+    flee: {fileID: 9100000, guid: 2ef8e6599b7f9934e8ff0d64c5325a1f, type: 2}
+    stunned: {fileID: 9100000, guid: c49dd765b5310304eb60fdf42804a0f2, type: 2}
+    idle: {fileID: 9100000, guid: c49dd765b5310304eb60fdf42804a0f2, type: 2}
+  guardAnimations:
+    hostile: {fileID: 9100000, guid: eb79e3fd0dd669f40a90a984b92a0ccf, type: 2}
+    flee: {fileID: 9100000, guid: eb79e3fd0dd669f40a90a984b92a0ccf, type: 2}
+    stunned: {fileID: 9100000, guid: 441942176ee9a724b9afe936d1d03496, type: 2}
+    idle: {fileID: 9100000, guid: a8555c0cff30527479e32562cef9141f, type: 2}
 --- !u!114 &4145373271523466863
 MonoBehaviour:
   m_ObjectHideFlags: 0
