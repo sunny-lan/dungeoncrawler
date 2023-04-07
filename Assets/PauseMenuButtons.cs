@@ -9,17 +9,18 @@ public class PauseMenuButtons : MonoBehaviour
 
     public void OnRestart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        StartCoroutine(fadeAndLoad(SceneManager.GetActiveScene().name));
+    }
+
+    IEnumerator fadeAndLoad(string scene)
+    {
+        yield return blackOut.FadeIn();
+
+        SceneManager.LoadScene(scene);
     }
 
     public void OnLevelSelect()
     {
-        IEnumerator tmp()
-        {
-            yield return blackOut.FadeIn();
-
-            SceneManager.LoadScene("Level Select");
-        }
-        StartCoroutine(tmp());
+        StartCoroutine(fadeAndLoad("Level Select"));
     }
 }
