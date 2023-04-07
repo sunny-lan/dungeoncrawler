@@ -235,7 +235,7 @@ MonoBehaviour:
       m_Calls: []
   raycastCenter: {fileID: 9006591227827930261}
   maxHealth: 300
-  initialHealth: -300
+  initialHealth: -200
   onChangeHealth:
     m_PersistentCalls:
       m_Calls: []
@@ -258,10 +258,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1
+  m_Radius: 0.5
+  m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!1 &4043520692855118588
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,6 +947,11 @@ PrefabInstance:
         type: 3}
       propertyPath: flip
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1796433032182496282, guid: 6bb5c48767407074f99192a2d8694f23,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2257243515353540509, guid: 6bb5c48767407074f99192a2d8694f23,
         type: 3}
