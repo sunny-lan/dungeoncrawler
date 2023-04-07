@@ -304,16 +304,12 @@ public class PlayerController : GridEntity
         if (isZombie)
             statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
         else
-            statusText.text = $"You are a human. Find {gameManager.AllKeys.Count - keysFound} remaining keys to unlock exit";
-    }
+            statusText.text = $"You are a human. Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit";    }
 
     [SerializeField] TMP_Text txtKeysFound;
 
-    int keysFound = 0;
-
     internal void OnCollectedKey(KeyController key)
     {
-        keysFound++;
         UpdateStatus();
         //txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
     }

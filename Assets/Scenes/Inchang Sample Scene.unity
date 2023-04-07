@@ -752,6 +752,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289e3cd1871c08b488ba7fd5ffe07aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapBounds: []
+  numKeys: 0
+  numEnemies: 1
+  keySpawnMinDistanceFromPlayer: 0
+  enemySpawnMinDistanceFromPlayer: 0
+  keyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 0}
+  exitController: {fileID: 0}
+  walkableVisualizerHeight: 0
 --- !u!1 &1279769350
 GameObject:
   m_ObjectHideFlags: 0
