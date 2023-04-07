@@ -10,8 +10,11 @@ public class PlayerController : GridEntity
     private Camera playerCam;
     [SerializeField] TMP_Text statusText;
     [SerializeField] ChoiceList actionsList;
-
     public float hpDrainPerTurn = 0.5f;
+    [SerializeField] AudioClip[] footstepAudio;
+    [SerializeField] AudioSource footstepAudioSource;
+    [SerializeField] AudioClip lastKeyAudio;
+    [SerializeField] AudioSource keyAudioSource;
 
     protected override void Awake()
     {
@@ -99,7 +102,12 @@ public class PlayerController : GridEntity
             //{
             //    Debug.Assert(false, "Raycast to find floor failed");
             //}
-
+            
+            if (footstepAudio.Length > 0)
+            {
+                footstepAudioSource.clip = footstepAudio[UnityEngine.Random.Range(0, footstepAudio.Length)];
+                footstepAudioSource.Play();
+            }
             transform.position = new(pos.x, 0, pos.y);
             OnDidTurn();
             return true;
@@ -319,6 +327,9 @@ public class PlayerController : GridEntity
     internal void OnCollectedKey(KeyController key)
     {
         UpdateStatus();
+        if (gameManager.UnfoundKeys.Count == 0)
+            keyAudioSource.clip = lastKeyAudio;
+        keyAudioSource.Play();
         //txtKeysFound.text = $"Keys Found: {keysFound} / {gameManager.AllKeys.Count}";
     }
 }

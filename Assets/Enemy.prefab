@@ -358,7 +358,7 @@ MonoBehaviour:
   humanMat: {fileID: 2100000, guid: 893c7f65d49be2d4d812f42c0f1f0441, type: 2}
   zombieMat: {fileID: 2100000, guid: cb4a26a8b7c4f2447bfcbe323cda575b, type: 2}
   emotionImage: {fileID: 6890054913604507731}
-  hostileSprite: {fileID: 21300000, guid: 705c4c40c072d3c44a7216550262e04b, type: 3}
+  hostileSprite: {fileID: 21300000, guid: 7963df26fdf3b9342a01df20d16befdd, type: 3}
   fleeSprite: {fileID: 21300000, guid: ffe5d4b144deac240bb9fc632250679b, type: 3}
   stunnedSprite: {fileID: 21300000, guid: 45649ee3904351f48ae4fdcf502b88c6, type: 3}
 --- !u!65 &1818793359890158857
