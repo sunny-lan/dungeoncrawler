@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEditor.Animations;
 
 
 public class EnemyController : GridEntity
@@ -28,7 +27,7 @@ public class EnemyController : GridEntity
     [System.Serializable]
     struct Animations
     {
-        public AnimatorController hostile, flee, stunned, idle;
+        public RuntimeAnimatorController hostile, flee, stunned, idle;
     }
 
     [SerializeField] Animations zombieAnimations;
