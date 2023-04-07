@@ -790,6 +790,60 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4856279607837900919}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8979097909522114569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856279607837935437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04830e3338d5fd47bd949d96fdeb782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.01
+      inSlope: 7.531401
+      outSlope: 7.531401
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.03186658
+      value: 0.25
+      inSlope: 9.167446
+      outSlope: Infinity
+      tangentMode: 97
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.19993795
+      value: 0.25
+      inSlope: Infinity
+      outSlope: -0.82267636
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4916687
+      value: 0.01
+      inSlope: -0.82267636
+      outSlope: -0.82267636
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!137 &4856279607851600853 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 13700002, guid: bdd7a03fd93bf2d4cb6babd63ceabee8,
@@ -978,3 +1032,57 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5179395145725169447}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1832633960964589235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8772308359146201415}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04830e3338d5fd47bd949d96fdeb782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 18.331995
+      outSlope: 18.331995
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.054399997
+      value: 0.9972605
+      inSlope: 9.167446
+      outSlope: Infinity
+      tangentMode: 97
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.19583334
+      value: 0.9972605
+      inSlope: Infinity
+      outSlope: -3.3709981
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4916687
+      value: 0
+      inSlope: -3.3709981
+      outSlope: -3.3709981
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

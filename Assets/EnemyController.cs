@@ -47,10 +47,13 @@ public class EnemyController : GridEntity
         }
     }
 
+    Animator curAnimator => isZombie ? zombieAnimator : guardAnimator;
+
     private void UpdatePose()
     {
-        Animator curAnimator = isZombie ? zombieAnimator : guardAnimator;
         Animations curAnimations = isZombie ? zombieAnimations : guardAnimations;
+
+        // TODO this is a really scuffed way to control animations...
         curAnimator.runtimeAnimatorController = emotion switch
         {
             EmotionType.HOSTILE => curAnimations.hostile,
@@ -59,6 +62,19 @@ public class EnemyController : GridEntity
             EmotionType.IDLE => curAnimations.idle,
             _ => throw new System.NotImplementedException(),
         };
+
+        if (emotion is EmotionType.IDLE or EmotionType.STUNNED)
+        {
+            // Idle animations can be played continuously
+            curAnimator.speed = 1;
+        }
+        else
+        {
+            // Walking and running animations for guard are paused slowed down
+            // because they look weird
+            // Zombie walking animation looks okay, keep full animation speed
+            curAnimator.speed = isZombie ? 1 : 0.01f;
+        }
     }
 
     protected override void Awake()
@@ -85,6 +101,13 @@ public class EnemyController : GridEntity
             };
 
         lastMoveDir = dirs[Random.Range(0, 4)];
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        UpdatePose();
     }
 
     public void TelegraphTurn()
@@ -149,6 +172,10 @@ public class EnemyController : GridEntity
         pos = pos + delta;
         transform.position = new Vector3(pos.x, 0, pos.y);
         lastMoveDir = delta;
+
+        // Guard walk animations speed up a bit between steps
+        if(!isZombie)
+            curAnimator.GetComponent<AnimationSpeedController>().Play();
     }
 
     private bool TelegraphBite()
