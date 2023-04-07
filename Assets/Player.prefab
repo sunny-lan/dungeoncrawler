@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 353626821061354400}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,8 +234,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   raycastCenter: {fileID: 9006591227827930261}
-  maxHealth: 100
-  initialHealth: 100
+  maxHealth: 300
+  initialHealth: -300
   onChangeHealth:
     m_PersistentCalls:
       m_Calls: []

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int numKeys;
     [SerializeField] float keySpawnMinDistanceFromPlayer;
     [SerializeField] GameObject keyPrefab;
+    [SerializeField] ExitController exitController;
 
     public float walkableVisualizerHeight;
 
@@ -250,15 +251,17 @@ public class GameManager : MonoBehaviour
     {
         unfoundKeys.Add(key);
         allKeys.Add(key);
+        exitController.UpdateKeyCount(0, AllKeys.Count);
     }
 
     internal void OnPlayerCollectedKey(KeyController key)
     {
         unfoundKeys.Remove(key);
+        exitController.UpdateKeyCount(AllKeys.Count - unfoundKeys.Count, AllKeys.Count);
 
         if (unfoundKeys.Count == 0)
         {
-            Debug.LogWarning("TODO unlock door");
+            exitController.Unlock();
         }
     }
 
