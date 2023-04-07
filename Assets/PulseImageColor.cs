@@ -15,9 +15,10 @@ public class PulseImageColor : MonoBehaviour
         image = GetComponent<RawImage>();
     }
 
-    IEnumerator Pulse()
+    IEnumerator Pulse(float strength)
     {
-        for(float alpha = 0; alpha <= maxAlpha; alpha += onSpeed * Time.deltaTime)
+        strength = Mathf.Clamp01(strength);
+        for(float alpha = 0; alpha <= strength*maxAlpha; alpha += onSpeed * Time.deltaTime)
         {
             var c = color;
             c.a = alpha;
@@ -25,7 +26,7 @@ public class PulseImageColor : MonoBehaviour
             yield return null;
         }
 
-        for (float alpha = maxAlpha; alpha>=0; alpha -= offSpeed * Time.deltaTime)
+        for (float alpha = strength* maxAlpha; alpha>=0; alpha -= offSpeed * Time.deltaTime)
         {
             var c = color;
             c.a = alpha;
@@ -34,9 +35,9 @@ public class PulseImageColor : MonoBehaviour
         }
     }
 
-    public void Trigger()
+    public void Trigger(float strength=1)
     {
         StopAllCoroutines();
-        StartCoroutine(Pulse());
+        StartCoroutine(Pulse(strength));
     }
 }
