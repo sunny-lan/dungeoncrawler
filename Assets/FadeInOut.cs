@@ -10,6 +10,7 @@ public class FadeInOut : MonoBehaviour
     CanvasGroup opacityController;
     public float fadeInTime;
     public bool initiallyFadedOut = true;
+    public bool fadeInOnStart = false;
 
     private void Awake()
     {
@@ -19,6 +20,10 @@ public class FadeInOut : MonoBehaviour
     public void Start()
     {
         opacityController.alpha = initiallyFadedOut ? 0 : 1;
+        if (fadeInOnStart)
+        {
+            StartCoroutine(initiallyFadedOut ? FadeIn() : FadeOut());
+        }
     }
 
     public IEnumerator FadeOut()
