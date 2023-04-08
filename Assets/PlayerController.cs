@@ -312,11 +312,11 @@ public class PlayerController : GridEntity
     void UpdateStatus()
     {
         if (isZombie)
-            statusText.text = $"You are a zombie. Bite {needToBite} humans to revive";
+            statusText.text = $"You are a zombie. Bite {needToBite} humans to revive.";
         else
         {
             if (gameManager.UnfoundKeys.Count > 0)
-                statusText.text = $"Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit";
+                statusText.text = $"Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit.";
             else
                 statusText.text = $"All keys found. Find the exit and escape.";
         }

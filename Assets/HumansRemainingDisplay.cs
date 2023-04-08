@@ -12,6 +12,6 @@ public class HumansRemainingDisplay : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         status = GetComponent<TMP_Text>();
-        gameManager.onHumansRemainingChanged.AddListener(count => status.text = $"{count} humans remaining"); ;
+        gameManager.onHumansRemainingChanged.AddListener(count => status.text = $"{count} HUMANS REMAIN."); ;
     }
 }
