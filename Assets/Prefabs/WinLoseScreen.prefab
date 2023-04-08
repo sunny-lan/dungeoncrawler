@@ -960,6 +960,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6777249496236349875, guid: a56cba4a3c8c9584189ab32e0ab06835,
+        type: 3}
+      propertyPath: m_text
+      value: MAIN MENU
+      objectReference: {fileID: 0}
     - target: {fileID: 8557633924223040615, guid: a56cba4a3c8c9584189ab32e0ab06835,
         type: 3}
       propertyPath: m_Pivot.x
