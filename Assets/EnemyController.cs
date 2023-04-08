@@ -78,6 +78,9 @@ public class EnemyController : GridEntity
         }
     }
 
+    public bool freezeUntilPlayerClose = false;
+    public float freezeUntilPlayerWithin = 5;
+
     protected override void Awake()
     {
         base.Awake();
@@ -135,6 +138,11 @@ public class EnemyController : GridEntity
 
     public void DoTurn()
     {
+        if(freezeUntilPlayerClose && (gameManager.player.pos - pos).magnitude >= freezeUntilPlayerWithin)
+        {
+            return;
+        }
+
         var entity = gameManager.GetEntityAt(pos + telegraphController.GetDirection());
 
         if (stunStatus == StunStatus.WAIT_NEXT_TURN)

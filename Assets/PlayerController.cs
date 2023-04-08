@@ -134,7 +134,7 @@ public class PlayerController : GridEntity
 
     //public float biteRange = 1.5f;
     //public float gunRange = 10f;
-    float punchRange = 1.5f;
+    float punchRange = 3f;
     float zombiePunchStrength = 10, humanPunchStength = 1;
 
 
@@ -212,9 +212,9 @@ public class PlayerController : GridEntity
                                 isZombie ? zombiePunchStrength : humanPunchStength,
                                 curRaycastInfo.point - playerCam.transform.position);
                         },
-                        keybind = new KeyTrigger()
+                        keybind = new MouseTrigger()
                         {
-                            keyCode = KeyCode.P,
+                            mouseBtn=0,
                         }
                     });
             }

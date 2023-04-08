@@ -6,7 +6,6 @@ public class PunchableDoor : MonoBehaviour, IPunchable
 {
     private ShakeController shaker;
     private Rigidbody rb;
-    private HPBar hpBar;
     private GameManager gameManager;
     public float maxShake = 0.3f, defaultShake = 0.1f;
 
@@ -18,15 +17,12 @@ public class PunchableDoor : MonoBehaviour, IPunchable
     {
         shaker = GetComponentInChildren<ShakeController>();
         rb = GetComponentInChildren<Rigidbody>();
-        hpBar = GetComponentInChildren<HPBar>();
         gameManager = FindObjectOfType<GameManager>();
     }
 
     void Start()
     {
         rb.isKinematic = true;
-        ((Component)hpBar).gameObject.SetActive(false);
-        hpBar.SetHP(HP); 
         initialpos = new Vector2Int(
             Mathf.RoundToInt(transform.position.x),
             Mathf.RoundToInt(transform.position.z)
@@ -45,25 +41,13 @@ public class PunchableDoor : MonoBehaviour, IPunchable
         shaker._distance = Mathf.Min(maxShake, defaultShake * strength);
         shaker.Begin();
 
-        ((Component)hpBar).gameObject.SetActive(true);
         lastPunchTime = Time.timeSinceLevelLoad;
-        StartCoroutine(FadeHP());
 
         HP -= strength/maxHP;
-        hpBar.SetHP(Mathf.Max(0, HP));
 
         if (HP <= 0)
         {
             Break(direction * strength * punchImpulse);
-        }
-    }
-
-    IEnumerator FadeHP()
-    {
-        yield return new WaitForSeconds(hpFadeoutTime);
-        if (Time.timeSinceLevelLoad - lastPunchTime > hpFadeoutTime)
-        {
-            ((Component)hpBar).gameObject.SetActive(false);
         }
     }
 
@@ -76,5 +60,6 @@ public class PunchableDoor : MonoBehaviour, IPunchable
         {
             gameManager.SetWalkable(initialpos, true);
         }
+        enabled = false;
     }
 }
