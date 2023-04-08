@@ -58,8 +58,9 @@ public class PunchableDoor : MonoBehaviour, IPunchable
         broken = true;
         if (setWalkable)
         {
-            gameManager.SetWalkable(initialpos, true);
+            GetComponent<SetWalkable>().Set(true);
         }
         enabled = false;
+        GetComponentInChildren<Outline>().enabled = false;
     }
 }

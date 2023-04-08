@@ -14,11 +14,16 @@ public class SetWalkable : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
 
+        Set(walkable);
+    }
+
+    public void Set(bool walkable)
+    {
         // Find area this object covers, and set iswalkable to false
         var center = transform.position;
         var size = transform.localScale;
 
-        if(transform.rotation.eulerAngles.y is (>85 and <95) or (>265 and <275))
+        if (transform.rotation.eulerAngles.y is (> 85 and < 95) or (> 265 and < 275))
         {
             size = new(size.z, size.y, size.x);
         }
