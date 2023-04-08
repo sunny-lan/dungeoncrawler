@@ -316,7 +316,7 @@ public class PlayerController : GridEntity
         else
         {
             if (gameManager.UnfoundKeys.Count > 0)
-                statusText.text = $"Find {gameManager.UnfoundKeys.Count} remaining keys to unlock exit.";
+                statusText.text = $"Find {gameManager.UnfoundKeys.Count} remaining keys to unlock the exit.";
             else
                 statusText.text = $"All keys found. Find the exit and escape.";
         }
