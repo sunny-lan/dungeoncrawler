@@ -36,7 +36,7 @@ public class PlayerController : GridEntity
 
             if (health <= -maxHealth)
             {
-                gameManager.HandlePlayerWinLose(false);
+                gameManager.HandlePlayerWinLose(false, "Ran out of health");
             }
 
             oldhealth = health;
@@ -49,7 +49,7 @@ public class PlayerController : GridEntity
         canvas.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
     }
-
+    
     // Start is called before the first frame update
     protected override void Start()
     {
