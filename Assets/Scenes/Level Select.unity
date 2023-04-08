@@ -1048,6 +1048,8 @@ MonoBehaviour:
   levels:
   - name: START
     scene: Salmon Level
+  - name: PUZZLE
+    scene: Linear Level
   levelBtnPrefab: {fileID: 621402305911201420, guid: 51f99b65d31d35241a1d06ea6fcb5fed,
     type: 3}
   fadeOut: {fileID: 80215396}
