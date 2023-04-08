@@ -12382,6 +12382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5181217835355589391, guid: bb799c53a7a7be244a63612baca43660,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9061129874393598238, guid: bb799c53a7a7be244a63612baca43660,
         type: 3}
       propertyPath: onChangeZombieStatus.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -25308,7 +25313,7 @@ PrefabInstance:
     - target: {fileID: 4189572239694096871, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4189572239694096871, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
@@ -25338,7 +25343,7 @@ PrefabInstance:
     - target: {fileID: 4570461068393623059, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4570461068393623059, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
@@ -25368,7 +25373,7 @@ PrefabInstance:
     - target: {fileID: 4620160573237662796, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4620160573237662796, guid: cd695bfac4608d0498be6ed2a11086bc,
         type: 3}
