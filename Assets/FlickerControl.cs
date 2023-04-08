@@ -14,6 +14,7 @@ using System.Collections.Generic;
 public class FlickerControl : MonoBehaviour
 {
     [Tooltip("External light to flicker; you can leave this null if you attach script to a light")]
+    public Light[] lights1;
     public LightController[] lights;
     [Tooltip("Minimum random light intensity")]
     public float minIntensity = 0f;
@@ -69,6 +70,9 @@ public class FlickerControl : MonoBehaviour
         // Calculate new smoothed average
         foreach(var light in lights)
             light.Intensity = lastSum / (float)smoothQueue.Count;
+
+        foreach (var light in lights1)
+            light.intensity = lastSum / (float)smoothQueue.Count; 
     }
 
 }
