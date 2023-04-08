@@ -16030,9 +16030,9 @@ MonoBehaviour:
     m_Size: {x: 14, y: 7, z: 10}
   - m_Position: {x: 14, y: 0, z: 8}
     m_Size: {x: 12, y: 7, z: 15}
-  numKeys: 5
+  numKeys: 7
   numEnemies: 20
-  keySpawnMinDistanceFromPlayer: 10
+  keySpawnMinDistanceFromPlayer: 5
   enemySpawnMinDistanceFromPlayer: 5
   keyPrefab: {fileID: 2749423228396809836, guid: cdf13cf9e3dd7744997e284bb4260bcb,
     type: 3}
