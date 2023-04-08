@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - name: SURVIVAL
+  - name: ARENA
     scene: Salmon Level
   - name: PUZZLE
     scene: Linear Level
