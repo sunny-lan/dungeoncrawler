@@ -2600,8 +2600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f05e58a8ca6ca48b584aec970eb10f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxShake: 0.2
-  defaultShake: 0.1
+  maxShake: 0.02
+  defaultShake: 0.01
   maxHP: 30
   setWalkable: 1
   hpFadeoutTime: 1.5
@@ -9167,7 +9167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _time: 0.2
-  _distance: 0.03
+  _distance: 0.01
   _delayBetweenShakes: 0
 --- !u!114 &1561439671
 MonoBehaviour:
