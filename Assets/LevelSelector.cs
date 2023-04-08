@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class LevelSelector : MonoBehaviour
         public string scene;
     }
 
-    public List<Level> levels=new();
+    public List<Level> levels = new();
 
     [SerializeField] LevelBtnController levelBtnPrefab;
     [SerializeField] FadeInOut fadeOut;
@@ -26,5 +27,7 @@ public class LevelSelector : MonoBehaviour
             levelBtnController.level = level;
             levelBtnController.fadeOut = fadeOut;
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }
