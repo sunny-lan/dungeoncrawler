@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     public float walkableVisualizerHeight;
 
+    HashSet<GridEntity> humansRemaining = new();
+    public UnityEvent<int> onHumansRemainingChanged;
+
     private WinLoseScreenController winLoseScreenController;
     private void Awake()
     {
@@ -29,12 +32,14 @@ public class GameManager : MonoBehaviour
     }
 
     public bool? playerWinState { get; private set; }
-    public void HandlePlayerWinLose(bool win)
+    public void HandlePlayerWinLose(bool win, string helpmsg = "")
     {
+        if (playerWinState != null) return;
+
         playerWinState = win;
         player.DisableControls();
         player.enabled = false;
-        winLoseScreenController.Show(win);
+        winLoseScreenController.Show(win, helpmsg);
     }
 
     public void RegisterEntity(GridEntity entity)
@@ -48,6 +53,19 @@ public class GameManager : MonoBehaviour
         }
 
         entities.Add(entity);
+
+        if (!entity.isZombie)
+        {
+            humansRemaining.Add(entity);
+            onHumansRemainingChanged?.Invoke(humansRemaining.Count);
+        }
+
+        entity.onChangeZombieStatus.AddListener(iszombie =>
+        {
+            if (entity.isZombie) humansRemaining.Remove(entity);
+            else humansRemaining.Add(entity);
+            onHumansRemainingChanged.Invoke(humansRemaining.Count);
+        });
     }
 
     [ContextMenu("Do Enemy Telegraph")]
@@ -239,6 +257,15 @@ public class GameManager : MonoBehaviour
         }
         RandomGenerateKeys();
         RandomGenerateEnemies();
+
+        int prevcount = 0;
+        onHumansRemainingChanged.AddListener(count =>
+        {
+            if (prevcount!=count && count == 0)
+                HandlePlayerWinLose(false, "No humans left in the level.");
+
+            prevcount = count;
+        });
     }
 
     public void RandomGenerateKeys()

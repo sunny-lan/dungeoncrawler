@@ -10,6 +10,7 @@ public class WinLoseScreenController : MonoBehaviour
     [SerializeField] FadeInOut fadeSelf;
     [SerializeField] TMP_Text winLoseText;
     [SerializeField] TMP_Text turnCount;
+    [SerializeField] TMP_Text helpMsg;
 
     GameManager gm;
 
@@ -18,8 +19,9 @@ public class WinLoseScreenController : MonoBehaviour
         gm = FindObjectOfType<GameManager>();
     }
 
-    public void Show(bool win)
+    public void Show(bool win, string helpmsg = "")
     {
+        helpMsg.text = helpmsg;
         winLoseText.text = win switch
         {
             false => "You Lose!",
