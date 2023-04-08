@@ -1048,7 +1048,7 @@ MonoBehaviour:
   levels:
   - name: SURVIVAL
     scene: Salmon Level
-  - name: PUZZLE
+  - name: IMPOSSIBLE
     scene: Linear Level
   levelBtnPrefab: {fileID: 621402305911201420, guid: 51f99b65d31d35241a1d06ea6fcb5fed,
     type: 3}
