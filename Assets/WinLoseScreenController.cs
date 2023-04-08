@@ -24,8 +24,8 @@ public class WinLoseScreenController : MonoBehaviour
         helpMsg.text = helpmsg;
         winLoseText.text = win switch
         {
-            false => "You Lose!",
-            true => "You Win!"
+            false => "ZOMBIFIED",
+            true => "ESCAPED"
         };
 
         turnCount.text = $"Number of Turns: {gm.player.moveCnt}";
