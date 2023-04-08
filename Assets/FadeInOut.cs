@@ -19,6 +19,7 @@ public class FadeInOut : MonoBehaviour
 
     public void Start()
     {
+        opacityController.blocksRaycasts = opacityController.interactable = !initiallyFadedOut;
         opacityController.alpha = initiallyFadedOut ? 0 : 1;
         if (fadeInOnStart)
         {
@@ -32,6 +33,10 @@ public class FadeInOut : MonoBehaviour
         while (opacityController.alpha > 0)
         {
             opacityController.alpha = 1 - time / fadeInTime;
+            if(opacityController.alpha < 0.5)
+            {
+                opacityController.blocksRaycasts = opacityController.interactable = false;
+            }
             time += Time.deltaTime;
             yield return null;
         }
@@ -43,6 +48,10 @@ public class FadeInOut : MonoBehaviour
         while (opacityController.alpha < 1)
         {
             opacityController.alpha = time / fadeInTime;
+            if(opacityController.alpha > 0.5)
+            {
+                opacityController.blocksRaycasts = opacityController.interactable = true;
+            }
             time += Time.deltaTime;
             yield return null;
         }
