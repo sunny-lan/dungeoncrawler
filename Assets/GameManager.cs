@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
         int prevcount = 0;
         onHumansRemainingChanged.AddListener(count =>
         {
-            if (prevcount!=count && count == 0)
+            if (prevcount!=count && count == 0 && player.isZombie)
                 HandlePlayerWinLose(false, "No humans left in the level.");
 
             prevcount = count;
